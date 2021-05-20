@@ -10,7 +10,6 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static('public'));
 
-app.get('/', (req, res) => res.send("Hello Project"))
 
 let users = JSON.parse(fs.readFileSync('users_data.json'));
 // login request path
