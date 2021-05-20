@@ -1,0 +1,81 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background: rgb(64, 147, 241);
+}
+form {
+    text-align: center;
+}
+
+#logo {
+    width: 25%;
+    margin-top: 80px;
+}
+
+#login-form,
+#register-form {
+    width: 12%;
+    font-size: 20px;
+    padding: 10px;
+
+}
+
+#username,
+#password,
+#email,
+#userName,
+#passWord,
+#comfirm-passWord {
+    padding: 13px;
+    width: 22%;
+    font-size: 14px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    /* background: rgba(163, 212, 245, 0.432); */
+}
+
+#btn_login,
+#btn-cancel,
+#btn-register {
+    padding: 10px;
+    width: 12%;
+    font-size: 16px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    background: #75be95e8;
+}
+
+.register {
+    display: none;
+}
+
+.save-profile {
+    width: 30%;
+    margin: auto;
+    margin-top: 80px;
+    text-align: center;
+    border-radius: 20px;
+    background: gold;
+    padding-top: 20px;
+}
+.profile {
+    width: 50%;
+    height: 200px;
+    border-radius: 100px;
+    background-image: url('../image/sophanna.PNG');
+    background-size: cover;
+    margin: auto;
+}
+#choosePhoto {
+    padding: 10px;
+    width: 30%;
+    background: rgb(224, 24, 24);
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
