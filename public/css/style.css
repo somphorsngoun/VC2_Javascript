@@ -6,6 +6,7 @@ body {
 }
 form {
     text-align: center;
+    /* display: none; */
 }
 
 #logo {
@@ -67,15 +68,168 @@ form {
     width: 50%;
     height: 200px;
     border-radius: 100px;
-    background-image: url('../image/sophanna.PNG');
+    background-image: url('../image/user_girl.png');
     background-size: cover;
     margin: auto;
 }
-#choosePhoto {
+#choosePhoto,
+#countinuce {
     padding: 10px;
-    width: 30%;
-    background: rgb(224, 24, 24);
     border: none;
     border-radius: 10px;
     outline: none;
+    margin-top: 10px;
+}
+#choosePhoto{
+    width: 30%;
+    background: rgb(224, 24, 24);
+}
+#countinuce {
+    width: 50%;
+    background: rgb(38, 187, 233);
+}
+
+.container {
+    display: flex;
+    display: none;
+}
+.menu,
+.sidebar,
+.main{
+    height: 100vh;
+    border: 1.5px solid gray;
+
+}
+.menu {
+    width: 5%;
+    text-align: center;
+}
+/* .fa-comments{
+    font-size: 30px;
+    color: rgb(45, 163, 241);
+} */
+#iconChat {
+    width: 80%;
+    margin-top: 15px;
+}
+#message{
+    width: 50%;
+    margin-top: 60px;
+}
+/* #message, */
+#user,
+#star,
+#mode,
+#users,
+#add {
+    width: 50%;
+    margin-top: 20px;
+    
+}
+
+.sidebar {
+    width: 25%;
+}
+.MyProfile,
+.MyUser{
+    display: flex;
+}
+.Profile{
+    width: 20%;
+
+}
+.Profile,
+.user {
+    height:65px;
+    border-radius: 40px;
+    background: rgb(228, 235, 135);
+    margin: 10px 0 0 10px;
+}
+.user {
+    width: 7%;
+}
+#Name,
+#name {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+#search{
+    padding: 10px;
+    width: 82%;
+    font-size: 15px;
+    margin-top: 15px;
+    border: 1px solid gray;
+    border-radius: 15px;
+    margin-left: 5%;
+}
+
+.main {
+    width: 70%;
+    
+}
+.MyUser{
+    background: rosybrown;
+    justify-content: space-between;
+}
+#name{
+    margin-left: -55%;
+}
+.iconCall {
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+}
+#call{
+    width: 15%;
+}
+#videoCall {
+    width: 20%;
+}
+#barIcon {
+    width: 35px;
+}
+
+.spaceMessage{
+    height: 80vh;
+    overflow: scroll;
+}
+
+.inputMessage {
+    display: flex;
+    justify-content: space-around;
+}
+
+#sticker {
+    width: 3%;
+}
+#writeMessage {
+    width: 75%;
+    padding: 10px;
+    border: 1.5px solid gray;
+    border-radius: 10px;
+    outline: none;
+    
+}
+#Send {
+    width: 7%;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: rgb(83, 173, 224);
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+.myMessage{
+    padding: 10px;
+    background: orange;
+    border-radius: 10px;
+    outline: none;
+    float: right;
+    margin: 10px 10px 0 0;
 }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VC2</title>
     <link rel="stylesheet" href="css/style.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
     <script src="js/app.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 </head>
@@ -34,5 +34,47 @@
             <p id="wrong-password"></p>
         </div>
     </form>
+    <div class="container">
+        <div class="menu">
+            <img src="image/iconChat.png" id="iconChat" alt="">
+            
+            <img src="image/message.png" id="message" alt="">
+            <img src="image/user.png" id="user" alt="">
+            <img src="image/star.png" id="star" alt="">
+            <img src="image/mode.png" id="mode" alt="">
+            <img src="image/users.png" id="users" alt="">
+            <img src="image/add.png" id="add" alt="">
+        </div>
+
+        <div class="sidebar">
+            <div class="MyProfile">
+                <div class="Profile"></div>
+                <p id="Name">SOMPHORS NGOUN</p>
+            </div>
+            <input type="text" id="search" placeholder="Search chats">
+        </div>
+
+        <div class="main">
+            <div class="MyUser">
+                <div class="user"></div>
+                <p id="name">SOMPHORS NGOUN</p>
+                <div class="iconCall">
+                    <img src="image/call.png" id="call" alt="">
+                    <img src="image/videoCall.png" id="videoCall" alt="">
+                    <img src="image/bar.png" id="barIcon" alt="">
+                </div>
+            </div>
+            <div class="spaceMessage">
+                
+            </div>
+            <div class="inputMessage">
+                <button id="photo">Photo</button>
+                <img src="image/sticker.png" id="sticker" alt="">
+                <input type="text" id="writeMessage" placeholder="Type a message">
+                <button id="Send">Send</button>
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>

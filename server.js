@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static('public'));
 
-
+let data = {};
 let users = JSON.parse(fs.readFileSync('users_data.json'));
 // login request path
 app.use("/login", (req, res) => {
@@ -24,6 +24,7 @@ app.use("/login", (req, res) => {
     for (let user of users){
       if (username === user.username && password === user.password){
         isValid = true;
+        data = user;
       }
     }
     res.send(isValid);
@@ -34,4 +35,9 @@ app.post('/register', (req,res) => {
     users.push(req.body);
     
     fs.writeFileSync('users_data.json', JSON.stringify(users));
+})
+ 
+app.get('/users', (req, res) => {
+  console.log(data);
+  res.send(data);
 })
