@@ -1,21 +1,10 @@
+// const axios = require("axios");
 
 const IP = "192.168.43.216";
 const PORT = 5000;
 const GET_LOGIN_REQUEST = "http://" + IP + ":" + PORT ;
 // Function.........................................................................................................................
 // .................................................................................................................................
-let Send = (e) =>{
-  e.preventDefault();
-  let MyMessage = document.querySelector('#writeMessage');
-  let spaceMessage = document.querySelector('.spaceMessage');
-  let Message = document.createElement('div');
-  Message.className = 'myMessage';
-  Message.textContent = MyMessage.value;
-  spaceMessage.appendChild(Message);
-
-  
-  
-}
 
 // ..................................................................................................................................
 function login(e) {
@@ -38,7 +27,13 @@ function login(e) {
   }
 // ..............................................................................................
   let Userdata = (response)=> {
-    console.log(response.data.url);
+    localStorage.setItem('UserInfo', JSON.stringify(response.data));
+    let UserProfile = document.querySelector('.Profile');
+    let UserName = document.querySelector('#Name');
+    UserName.textContent = response.data.username;
+    UserProfile.src = response.data.url;
+    IsTrue = false;
+
   }
 // ..............................................................................................
   let Acount_login = () => {
@@ -47,10 +42,18 @@ function login(e) {
     let Container = document.querySelector('.container');
     Container.style.display = 'block';
     Container.style.display = 'flex';
+    let Start = document.querySelector('.start');
+    Start.style.display = 'block';
+    document.querySelector('.main').style.display = 'none';
 
     if (IsTrue){
       let url = GET_LOGIN_REQUEST + '/users';
       axios.get(url).then(Userdata)
+    }else {
+      let UserProfile = document.querySelector('.Profile');
+      let UserName = document.querySelector('#Name');
+      UserName.textContent = dataUser.username;
+      UserProfile.src = dataUser.url;
     }
   }
 // .................................................................................................................
@@ -59,12 +62,7 @@ function login(e) {
     document.querySelector('.register').style.display = 'block';
     document.querySelector('.login').style.display = 'none';
   }
-// ....................................................................................................
-  let loginForm = (e) =>{
-    e.preventDefault();
-    document.querySelector('.register').style.display = 'none';
-    document.querySelector('.login').style.display = 'block';
-  }
+
 // ..........................................................................................................
   let setPhotos = () =>{
     let Myprofile = document.querySelector('.profile');
@@ -94,24 +92,26 @@ function login(e) {
           Profile.src = '../image/user_girl.png';
           Image = '../image/user_girl.png';
           
-        } else {
-          Profile.src = '../image/user_boy.png';
+        } else {          Profile.src = '../image/user_boy.png';
           Image = '../image/user_boy.png';
-        }
+        }   
       })
     }
-      dataUser = {
+
+    dataUser = {
         username: UserName.value,
         password: Create_PassWord.value,
         email: Email.value,
-        url: Image
+        url: Image,
+        friends: []
       }
+    localStorage.setItem('UserInfo', JSON.stringify(dataUser));
+    
   
-      let url = GET_LOGIN_REQUEST + '/register';
-      axios
-          .post(url,dataUser)
+    let url = GET_LOGIN_REQUEST + '/register';
+    axios.post(url,dataUser)
       
-    }
+  }
   
 // ................................................................................................
   let register = (e) =>{
@@ -185,11 +185,204 @@ function login(e) {
     Comfirm_PassWord.value = '';
     Email.value = '';
   }
-  // MAIN---------------------------------------------------------------------------------------------
+// ...................................................................................................
+  let Chat = () => {
+    console.log(123);
+  }
+// ...................................................................................................
+ let selectFri = (event) =>{
+   let getUsername = event.target.children[1].textContent;
+   let getUserpass = event.target.children[2].textContent;
+   let getUserpic = event.target.children[3].textContent;
+   console.log(getUsername, getUserpass);
+   let url = 'http://192.168.43.216:5000/addTofriend';
+  let Object = {
+    username: getUsername,
+    password: getUserpass,
+    url: getUserpic
+  };
+
+  axios.post(url, Object)
+  .then(Chat)
+  let MyFriends = document.querySelector('.MyFriends');
+  MyFriends.appendChild(createFriend(Object));
+
+  localStorage.setItem('messageWith', JSON.stringify(Object));
+  let URL = 'http://192.168.43.216:5000/chating';
+    axios.post(URL, Object)
+
+  
+  let main = document.querySelector('.main');
+  main.style.display = 'block';
+  let start = document.querySelector('.start');
+  start.style.display = 'none';
+  let friProfile = document.querySelector('.user');
+  friProfile.src = getUserpic;
+  let friName = document.querySelector('#name');
+  friName.textContent = getUsername;
+
+  
+
+  
+
+ }
+// ...................................................................................................
+  let addTofriend = () =>{
+    let wantAdd = document.querySelectorAll('.Friends .myprofile');
+    
+    for (let OneOf of wantAdd){
+      OneOf.addEventListener('click', selectFri);
+
+    }
+  }
+// ...................................................................................................
+  let createFriend = (user) => {
+    let Profile = document.createElement('div');
+    Profile.className = 'myprofile';
+    let User = document.createElement('div');
+    User.className = 'OneUser';
+    let ProfileUser = document.createElement('img');
+    ProfileUser.className = 'Profile';
+    ProfileUser.src = user.url;
+    let Password = document.createElement('p');
+    Password.id = 'userPass';
+    Password.textContent = user.password;
+    let Name = document.createElement('p');
+    Name.textContent = user.username;
+    Name.id = 'Name';
+    let pic = document.createElement('p');
+    pic.textContent = user.url;
+    pic.id = 'image';
+    let Sidebar = document.querySelector('.sidebar')
+    Sidebar.appendChild(User);
+    User.appendChild(Profile);
+    Profile.appendChild(ProfileUser);
+    Profile.appendChild(Name);
+    Profile.appendChild(Password);
+    Profile.appendChild(pic);
+    let hr = document.createElement('hr');
+    User.appendChild(hr);
+    return User;
+  }
+// ...................................................................................................
+  let AllUser = (response) =>{
+    let userInfo = response.data;
+    let MyUser = JSON.parse(localStorage.getItem('UserInfo'));
+    let Friends = document.querySelector('.Friends');
+    let MyFriends = document.querySelector('.MyFriends');
+    MyFriends.style.display = 'none';
+    Friends.style.display = 'block';
+
+    let Remove = document.querySelectorAll('.Friends .OneUser')
+    for (fri of Remove){
+      fri.remove();
+    }
+    for (let user of userInfo){
+    if (user.username !== MyUser.username && user.password !== MyUser.password){
+
+      Friends.appendChild(createFriend(user));
+
+    }
+    
+    }
+    addTofriend();
+  }
+// ...................................................................................................
+  let AddFriend = () => {
+    let MyProfile = document.querySelector('.MyProfile');
+    MyProfile.style.display = 'none';
+
+    let URL = 'http://192.168.43.216:5000/AllUsers';
+    axios.get(URL).then(AllUser)
+  }
+// .....................................................................................................
+  let ChatWithtFri = (event) => {
+    let getUsername = event.target.children[1].textContent;
+    let getUserpass = event.target.children[2].textContent;
+    let getUserpic = event.target.children[3].textContent;
+
+    let Object = {
+      username: getUsername,
+      password: getUserpass,
+      url: getUserpic
+    };
+    console.log(Object);
+    localStorage.setItem('messageWith', JSON.stringify(Object));
+    let url = 'http://192.168.43.216:5000/chating';
+    axios.post(url, Object)
+
+    let main = document.querySelector('.main');
+    main.style.display = 'block';
+    let start = document.querySelector('.start');
+    start.style.display = 'none';
+    let friProfile = document.querySelector('.user');
+    friProfile.src = getUserpic;
+    let friName = document.querySelector('#name');
+    friName.textContent = getUsername;
+    let fripass = document.querySelector('#userPass');
+    fripass.textContent = getUserpass;
+  }
+// ...................................................................................................
+  let MyFri = (response) => {
+    let Myfriend = response.data;
+    let MyFriends = document.querySelector('.MyFriends');
+    let Remove = document.querySelectorAll('.MyFriends .OneUser')
+    // for (fri of Remove){
+    //   fri.remove();
+    // }
+    for (fri of Myfriend){
+      let fridata = {
+        username: fri.Name,
+        password: fri.Password,
+        url: fri.url
+      }
+      MyFriends.appendChild(createFriend(fridata));
+      // MyFriends.appendChild();
+    }
+    let wantAdd = document.querySelectorAll('.MyFriends .myprofile');
+    
+    for (let OneOf of wantAdd){
+      OneOf.addEventListener('click', ChatWithtFri);
+
+    }
+  }
+// ...................................................................................................
+ let UserFriend = () =>{
+  let MyProfile = document.querySelector('.MyProfile');
+  MyProfile.style.display = 'block';
+  MyProfile.style.display = 'flex';
+  let Friends = document.querySelector('.Friends');
+  let MyFriends = document.querySelector('.MyFriends');
+  MyFriends.style.display = 'block';
+  Friends.style.display = 'none';
+  let URL = 'http://192.168.43.216:5000/myFri';
+  let User = JSON.parse(localStorage.getItem('UserInfo'));
+  axios.post(URL,User).then(MyFri)
+  axios.get(URL).then(MyFri)
+ }
+// .................................................................................................
+  let selectMode = () =>{
+    let start = document.querySelector('#start');
+
+    if (Mymode){
+      document.body.style.background = 'black';
+      document.body.style.color = 'white';
+      start.style.background = "rgba(226, 221, 221, 0.521)";
+      Mymode = false;
+    } else{
+      document.body.style.background = 'White';
+      document.body.style.color = 'black';
+      Mymode = true;
+    }
+    
+  }
+// MAIN---------------------------------------------------------------------------------------------
 let dataUser = {};
 let IsTrue = false;
+let Isstart = true;
+let Mymode = true;
 
-  const message = document.querySelector("#message");
+const message = document.querySelector("#message");
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const btn_login = document.querySelector("#btn_login");
@@ -205,14 +398,22 @@ btn_login.addEventListener("click", login);
 const register_form = document.querySelector('#register-form');
 register_form.addEventListener('click', registerForm);
 
-const login_form = document.querySelector('#login-form');
-login_form.addEventListener('click', loginForm)
-
 const btn_register = document.querySelector('#btn-register');
 btn_register.addEventListener('click', register);
 
 const btn_cacel = document.querySelector('#btn-cancel');
 btn_cacel.addEventListener('click', Cancel);
 
-let btn_Send = document.querySelector('#Send');
-btn_Send.addEventListener('click', Send);
+let addFriedns = document.querySelector('#add');
+addFriedns.addEventListener('click', AddFriend);
+
+let Mode = document.querySelector('#mode');
+Mode.addEventListener('click', selectMode);
+
+let User_icon = document.querySelector('#user');
+User_icon.addEventListener('click', UserFriend);
+
+let today = new Date();
+
+let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + ' / ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+console.log(date);

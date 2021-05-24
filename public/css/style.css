@@ -3,10 +3,15 @@ body {
     margin: 0;
     padding: 0;
     background: rgb(64, 147, 241);
+    font-family: sans-serif;
 }
 form {
     text-align: center;
     /* display: none; */
+}
+#register-form{
+    color: blue;
+    cursor: pointer;
 }
 
 #logo {
@@ -38,6 +43,7 @@ form {
     /* background: rgba(163, 212, 245, 0.432); */
 }
 
+
 #btn_login,
 #btn-cancel,
 #btn-register {
@@ -48,11 +54,17 @@ form {
     border: none;
     border-radius: 15px;
     outline: none;
+    color: white;
+    font-weight: bold;
     background: #75be95e8;
 }
 
 .register {
     display: none;
+}
+.login h1,
+.register h1 {
+    color: white;
 }
 
 .save-profile {
@@ -95,7 +107,8 @@ form {
 }
 .menu,
 .sidebar,
-.main{
+.main,
+.start{
     height: 100vh;
     border: 1.5px solid gray;
 
@@ -112,12 +125,11 @@ form {
     width: 80%;
     margin-top: 15px;
 }
-#message{
+#user{
     width: 50%;
     margin-top: 60px;
 }
-/* #message, */
-#user,
+#message,
 #star,
 #mode,
 #users,
@@ -129,9 +141,11 @@ form {
 
 .sidebar {
     width: 25%;
+    overflow: scroll;
 }
 .MyProfile,
-.MyUser{
+.MyUser,
+.myprofile{
     display: flex;
 }
 .Profile{
@@ -142,16 +156,16 @@ form {
 .user {
     height:65px;
     border-radius: 40px;
-    background: rgb(228, 235, 135);
     margin: 10px 0 0 10px;
 }
 .user {
-    width: 7%;
+    width: 8%;
+    border-radius: 20px;
 }
 #Name,
 #name {
     margin-top: 15px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
 }
 #search{
@@ -159,41 +173,45 @@ form {
     width: 82%;
     font-size: 15px;
     margin-top: 15px;
+    outline: none;
     border: 1px solid gray;
     border-radius: 15px;
     margin-left: 5%;
 }
 
-.main {
+.main,
+.start {
     width: 70%;
     
 }
 .MyUser{
-    background: rosybrown;
     justify-content: space-between;
 }
-#name{
-    margin-left: -55%;
+.nameProfile {
+    display: flex;
+}
+.user {
+    width: 23%;
+    border-radius: 40px;
 }
 .iconCall {
+    width: 20%;
     margin-right: 30px;
     display: flex;
     align-items: center;
     justify-content: space-around;
 
 }
-#call{
-    width: 15%;
-}
+#call,
 #videoCall {
-    width: 20%;
+    width: 22%;
 }
 #barIcon {
     width: 35px;
 }
 
 .spaceMessage{
-    height: 80vh;
+    height: 76vh;
     overflow: scroll;
 }
 
@@ -202,7 +220,9 @@ form {
     justify-content: space-around;
 }
 
-#sticker {
+#sticker,
+#vioce,
+#photo {
     width: 3%;
 }
 #writeMessage {
@@ -226,10 +246,37 @@ form {
 }
 
 .myMessage{
-    padding: 10px;
-    background: orange;
     border-radius: 10px;
+    display: flex;
+    justify-content: flex-end;
     outline: none;
-    float: right;
-    margin: 10px 10px 0 0;
+}
+.myMessage p{
+    background: orange;
+    padding: 15px;
+    border-radius: 10px;
+}
+.start {
+    display: none;
+    background-image: url('https://cdn.pixabay.com/photo/2015/04/23/21/59/hot-air-balloon-736879_960_720.jpg');
+    background-size: cover;
+}
+#start {
+    width: 30%;
+    font-size: 22px;
+    background: rgba(199, 198, 198, 0.555);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: auto;
+    margin-top: 40vh;
+}
+
+/* .myprofile {
+    overflow: scroll;
+    background: black;
+} */
+#userPass,
+#image {
+    display: none;
 }
