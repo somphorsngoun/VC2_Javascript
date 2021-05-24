@@ -251,6 +251,17 @@ form {
     justify-content: flex-end;
     outline: none;
 }
+.FriMessage {
+    margin-left: 20px;
+    display: flex;
+    justify-content: flex-start;
+
+}
+.FriMessage p{
+    background: rgb(122, 215, 238);
+    padding: 15px;
+    border-radius: 10px;
+}
 .myMessage p{
     background: orange;
     padding: 15px;

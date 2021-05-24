@@ -15,7 +15,7 @@ function login(e) {
       let isValid = response.data;
       let text = "not vlaid";
       let color = "red";
-  
+      my_account = false;
       if (isValid){
         IsTrue = true;
         Acount_login();
@@ -206,11 +206,9 @@ function login(e) {
   .then(Chat)
   let MyFriends = document.querySelector('.MyFriends');
   MyFriends.appendChild(createFriend(Object));
-
   localStorage.setItem('messageWith', JSON.stringify(Object));
   let URL = 'http://192.168.43.216:5000/chating';
     axios.post(URL, Object)
-
   
   let main = document.querySelector('.main');
   main.style.display = 'block';
@@ -295,6 +293,66 @@ function login(e) {
     let URL = 'http://192.168.43.216:5000/AllUsers';
     axios.get(URL).then(AllUser)
   }
+
+// ////////////////////////
+
+
+  let sendmessage = (response) =>{
+    let Allmessage = response.data;
+    console.log(in_relation);
+    if (in_relation){
+      for (user of Allmessage){
+        let MyMessage = document.querySelector('#writeMessage');
+        let spaceMessage = document.querySelector('.spaceMessage');
+        let Message = document.createElement('div');
+        let FriMessage = document.createElement('div');
+        FriMessage.className = 'FriMessage';
+        Message.className = 'myMessage';
+
+        let P = document.createElement('p');
+        P.textContent = user.message;
+        let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
+        if (user.user === onwUser.username){
+          if (user.message !== ''){
+            Message.appendChild(P);
+            spaceMessage.appendChild(Message);
+          }
+
+        } else {
+          if (user.message !== ''){
+            FriMessage.appendChild(P);
+            spaceMessage.appendChild(FriMessage);
+          }
+        }
+        in_relation = false;
+    }
+
+    }
+    
+}
+
+let text_message = (response) =>{
+    let ChatWith = response.data;
+    let MyMessage = document.querySelector('#writeMessage');
+    let MyAccount = JSON.parse(localStorage.getItem("UserInfo"));
+    console.log(ChatWith);
+    let ObjectOfmessage = {
+        user1: MyAccount.username,
+        user2: ChatWith.username,
+        messages: [{
+            user: MyAccount.username,
+            id: NumOfId,
+            message: MyMessage.value
+        }]
+
+    }
+    
+    let URL = 'http://192.168.43.216:5000/message';
+
+    axios.post(URL, ObjectOfmessage).then(sendmessage)
+    MyMessage.value = '';
+
+}
 // .....................................................................................................
   let ChatWithtFri = (event) => {
     let getUsername = event.target.children[1].textContent;
@@ -321,6 +379,10 @@ function login(e) {
     friName.textContent = getUsername;
     let fripass = document.querySelector('#userPass');
     fripass.textContent = getUserpass;
+
+
+    let text_url = 'http://192.168.43.216:5000/chating';
+    axios.get(text_url).then(text_message)
   }
 // ...................................................................................................
   let MyFri = (response) => {
@@ -381,7 +443,7 @@ let dataUser = {};
 let IsTrue = false;
 let Isstart = true;
 let Mymode = true;
-
+let in_relation = true;
 const message = document.querySelector("#message");
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
@@ -412,6 +474,8 @@ Mode.addEventListener('click', selectMode);
 
 let User_icon = document.querySelector('#user');
 User_icon.addEventListener('click', UserFriend);
+
+
 
 let today = new Date();
 
