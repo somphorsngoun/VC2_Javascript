@@ -341,7 +341,6 @@ let text_message = (response) =>{
         user2: ChatWith.username,
         messages: [{
             user: MyAccount.username,
-            id: NumOfId,
             message: MyMessage.value
         }]
 
@@ -389,9 +388,9 @@ let text_message = (response) =>{
     let Myfriend = response.data;
     let MyFriends = document.querySelector('.MyFriends');
     let Remove = document.querySelectorAll('.MyFriends .OneUser')
-    // for (fri of Remove){
-    //   fri.remove();
-    // }
+    for (fri of Remove){
+      fri.remove();
+    }
     for (fri of Myfriend){
       let fridata = {
         username: fri.Name,
@@ -475,9 +474,3 @@ Mode.addEventListener('click', selectMode);
 let User_icon = document.querySelector('#user');
 User_icon.addEventListener('click', UserFriend);
 
-
-
-let today = new Date();
-
-let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + ' / ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-console.log(date);

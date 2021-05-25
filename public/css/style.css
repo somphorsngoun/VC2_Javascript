@@ -226,12 +226,24 @@ form {
     width: 3%;
 }
 #writeMessage {
-    width: 75%;
+    width: 70%;
     padding: 10px;
     border: 1.5px solid gray;
     border-radius: 10px;
     outline: none;
     
+}
+#bold{
+    font-size: 14px;
+    font-weight: bold;
+}
+#italic{
+    font-size: 14px;
+    font-style: italic;
+}
+#underline {
+    font-size: 14px;
+    text-decoration: underline;
 }
 #Send {
     width: 7%;
@@ -290,4 +302,16 @@ form {
 #userPass,
 #image {
     display: none;
+}
+
+.showImoji span{
+    cursor: pointer;
+}
+.showImoji {
+    height: 40vh;
+    background: rgba(0, 0, 0, 0.329);
+    overflow: scroll;
+    display: none;
+    padding: 10px;
+    margin-top: -40vh;
 }

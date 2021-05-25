@@ -78,18 +78,16 @@ app.post('/addTofriend', (req,res) =>{
 
 })
 
-let Data = {};
+let fri_data = {};
 app.post('/myFri', (req, res) => {
-  Data = req.body;
-  
-})
-app.get('/myFri', (req,res) =>{
+  fri_data = req.body;
   for (user of users){
-    if (user.username === Data.username && user.password === Data.password){
+    if (user.username === fri_data.username && user.password === fri_data.password){
       res.send(user.friends);
     }
   }
 })
+
 
 let Chating = {};
 app.post('/chating', (req, res) => {
