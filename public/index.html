@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VC2</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
     <script src="js/app.js" defer></script>
-    <script src="js/message.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 </head>
 <body>
@@ -20,7 +18,7 @@
             <input type="text" id="username" placeholder="Username"><br>
             <input type="password" id="password" placeholder="password"><br>
             <p>No Account? <span id="register-form">Create an account</span></p>
-            <button id="btn_login">Login</button>
+            <button id="btn_login"><a href="">Login</a></button>
             <p id="message"></p>
         </div>
 
@@ -35,61 +33,6 @@
             <p id="wrong-password"></p>
         </div>
     </form>
-    <div class="container">
-        <div class="menu">
-            <img src="image/iconChat.png" id="iconChat" alt="">
-            
-            <img src="image/user.png" id="user" alt="">
-            <img src="image/message.png" id="message" alt="">
-            <img src="image/mode.png" id="mode" alt="">
-            <img src="image/users.png" id="users" alt="">
-            <img src="image/add.png" id="add" alt="">
-        </div>
-
-        <div class="sidebar">
-            <div class="MyProfile">
-                <img src="" class="Profile" alt="">
-                <p id="Name"></p>
-            </div>
-            <div class="myprofile"></div>
-            <input type="text" id="search" placeholder="Search chats">
-            <hr>
-            <div class="MyFriends"></div>
-            <div class="Friends"></div>
-        </div>
-
-        <div class="main">
-            <div class="MyUser">
-                <div class="nameProfile">
-                    <img src="" class="user" alt="">
-                    <p id="name"></p>
-                </div>
-                <div class="iconCall">
-                    <img src="image/call.png" id="call" alt="">
-                    <img src="image/videoCall.png" id="videoCall" alt="">
-                    <img src="image/bar.png" id="barIcon" alt="">
-                </div>
-            </div>
-            <hr>
-            <div class="spaceMessage">
-                
-            </div>
-            <div class="showImoji"></div>
-            <div class="inputMessage">
-                <img src="image/photo.png" id="photo" alt="">
-                <img src="image/sticker.png" id="sticker" alt="">
-                <img src="image/microphone.png" id="vioce" alt="">
-                <button id="bold">B</button>
-                <button id="italic">I</button>
-                <button id="underline">U</button>
-                <input type="text" id="writeMessage" placeholder="Type a message">
-                <button id="Send">Send</button>
-            </div>
-        </div>
-        <div class="start">
-            <p id="start">Select a chat to start messaging</p>
-        </div>
-
-    </div>
+  
 </body>
 </html>

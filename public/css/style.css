@@ -15,7 +15,7 @@ form {
 }
 
 #logo {
-    width: 25%;
+    width: 20%;
     margin-top: 80px;
 }
 
@@ -58,6 +58,10 @@ form {
     font-weight: bold;
     background: #75be95e8;
 }
+#btn_login a {
+    text-decoration: none;
+    color: white;
+}
 
 .register {
     display: none;
@@ -73,8 +77,9 @@ form {
     margin-top: 80px;
     text-align: center;
     border-radius: 20px;
-    background: gold;
+    background: rgba(243, 243, 241, 0.568);
     padding-top: 20px;
+    padding: 2%;
 }
 .profile {
     width: 50%;
@@ -84,7 +89,7 @@ form {
     background-size: cover;
     margin: auto;
 }
-#choosePhoto,
+
 #countinuce {
     padding: 10px;
     border: none;
@@ -92,24 +97,26 @@ form {
     outline: none;
     margin-top: 10px;
 }
-#choosePhoto{
-    width: 30%;
-    background: rgb(224, 24, 24);
-}
 #countinuce {
     width: 50%;
-    background: rgb(38, 187, 233);
+    color: white;
+    background: rgb(78, 210, 250);
+    font-size: 16px;
+    font-weight: bold;
+    overflow: hidden;
 }
-
+#chooseImage{
+    margin-left: 20%;
+    border: none;
+}
 .container {
     display: flex;
-    display: none;
 }
 .menu,
 .sidebar,
 .main,
 .start{
-    height: 100vh;
+    height: 99vh;
     border: 1.5px solid gray;
 
 }
@@ -211,7 +218,7 @@ form {
 }
 
 .spaceMessage{
-    height: 76vh;
+    height: 75vh;
     overflow: scroll;
 }
 

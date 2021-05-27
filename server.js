@@ -1,4 +1,3 @@
-const { query } = require('express');
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -10,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static('public'));
 
-let data = {};
+let my_data = {};
 let users = JSON.parse(fs.readFileSync('users_data.json'));
 // login request path
 app.use("/login", (req, res) => {
@@ -18,35 +17,48 @@ app.use("/login", (req, res) => {
     let username = req.query.username;
     let password = req.query.password;
     //2. Check user and password if valid return true otherwise return false.
+    console.log(users);
     let isValid = false;
     for (let user of users){
       if (username === user.username && password === user.password){
         isValid = true;
-        data = user;
+        my_data = user;
       }
     }
     res.send(isValid);
-  });
+ });
 
 app.post('/register', (req,res) => {
-    users.push(req.body);
-    
-    fs.writeFileSync('users_data.json', JSON.stringify(users));
+  let signin = req.body;
+  let sameName = true;
+  if (users.length === 0){
+    users.push(signin);
+  }else{
+    for(let user of users){
+      if (user.username === signin.username && user.password === signin.password){
+        sameName = false;
+      }
+    }
+    if (sameName){
+      users.push(signin);
+    }
+  }
+
+  fs.writeFileSync('users_data.json', JSON.stringify(users));
 })
  
-app.get('/users', (req, res) => {
-  res.send(data);
-})
+// app.post('/users', (req, res) => {
+//     my_data = req.body;
+// })
 
 app.get('/AllUsers', (req, res) => {
+  console.log(users);
   res.send(users);
 })
-
 app.post('/addTofriend', (req,res) =>{
   let Username = req.body.username;
   let Userpass = req.body.password;
-  // let Userurl = req.body.url;
-  console.log(req.body);
+  my_data = req.body.my_userData;
   let Friend = {};
   let IsTrue = true;
   for (user of users){
@@ -55,7 +67,7 @@ app.post('/addTofriend', (req,res) =>{
     }
   }
   for (fri of users){
-    if (fri.username === data.username && fri.password === data.password){
+    if (fri.username === my_data.username && fri.password === my_data.password){
       let friUser = {
         Name: Friend.username,
         Password: Friend.password,
@@ -70,7 +82,6 @@ app.post('/addTofriend', (req,res) =>{
         fri.friends.push(friUser);
 
       }
-      console.log(fri.friends);
 
     }
   }
@@ -94,13 +105,16 @@ app.post('/chating', (req, res) => {
   Chating = req.body;
 })
 app.get('/chating', (req, res) => {
-  res.send(Chating);
+    console.log(Chating);
+    res.send(Chating);
 })
 
 
 app.post('/message', (req, res) =>{
   let Message = req.body;
+  console.log(123);
   let chatWith = [];
+  let isTrue = true;
   let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
   if (Usermessage.length === 0){
     Usermessage.push(Message);
@@ -108,10 +122,19 @@ app.post('/message', (req, res) =>{
     for (user of Usermessage){
       if (user.user1 === Message.user1 && user.user2 === Message.user2 || user.user1 === Message.user2 && user.user2 === Message.user1){
         user.messages.push(Message.messages[0]);
+        isTrue = false;
         chatWith = user.messages;
+
       }
     }
   }
+  if (isTrue){
+    Usermessage.push(Message);
+  }
+  fs.writeFileSync('message.json', JSON.stringify(chatWith));
   fs.writeFileSync('user_message.json', JSON.stringify(Usermessage));
   res.send(chatWith);
+})
+app.get('/message', (req, res) => {
+  res.send(JSON.parse(fs.readFileSync('message.json')));
 })
