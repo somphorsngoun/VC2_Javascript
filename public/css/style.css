@@ -265,22 +265,25 @@ form {
     display: flex;
     justify-content: flex-end;
     outline: none;
+    overflow: hidden;
 }
 .FriMessage {
     margin-left: 20px;
     display: flex;
     justify-content: flex-start;
+    overflow: hidden;
 
+}
+.myMessage p,
+.FriMessage p{
+    padding: 15px;
+    border-radius: 10px;
 }
 .FriMessage p{
     background: rgb(122, 215, 238);
-    padding: 15px;
-    border-radius: 10px;
 }
 .myMessage p{
     background: orange;
-    padding: 15px;
-    border-radius: 10px;
 }
 .start {
     display: none;

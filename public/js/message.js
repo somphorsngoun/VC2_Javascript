@@ -45,10 +45,22 @@ let refresh = (response) => {
 
       let P = document.createElement('p');
       P.textContent = user.message;
+      if (user.bold === 'bold'){
+        P.style.fontWeight = 'bold';
+      }
+      if (user.italic === 'italic'){
+        P.style.fontStyle = 'italic';
+      }
+      if (user.underline === 'underline'){
+        P.style.textDecoration = 'underline';
+      }
+      let span = document.createElement('span');
+      span.textContent = user.time;
       let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
       if (user.user === onwUser.username){
         if (user.message !== ''){
           Message.appendChild(P);
+          Message.appendChild(span);
           spaceMessage.appendChild(Message);
         }
 
@@ -56,6 +68,7 @@ let refresh = (response) => {
         if (user.message !== ''){
           FriMessage.appendChild(P);
           spaceMessage.appendChild(FriMessage);
+          FriMessage.appendChild(span);
         }
 
       }
@@ -66,8 +79,7 @@ let refresh = (response) => {
 }
 
 let send_message = () =>{
-    let Allmessage = 'http://192.168.1.22:5000/messages';
-    
+  let Allmessage = 'http://192.168.1.22:5000/messages'; 
   axios
     .get(Allmessage)
     .then(refresh)
@@ -96,16 +108,29 @@ let sendmessage = (response) =>{
 
       let P = document.createElement('p');
       P.textContent = user.message;
+      if (user.bold === 'bold'){
+        P.style.fontWeight = 'bold';
+      }
+      if (user.italic === 'italic'){
+        P.style.fontStyle = 'italic';
+      }
+      if (user.underline === 'underline'){
+        P.style.textDecoration = 'underline';
+      }
+      let span = document.createElement('span');
+      span.textContent = user.time;
       let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
       if (user.user === onwUser.username){
         if (user.message !== ''){
           Message.appendChild(P);
+          Message.appendChild(span);
           spaceMessage.appendChild(Message);
         }
 
       } else {
         if (user.message !== ''){
           FriMessage.appendChild(P);
+          FriMessage.appendChild(span);
           spaceMessage.appendChild(FriMessage);
         }
 
@@ -365,6 +390,7 @@ let imojis = (response) =>{
 let emojiShow = true;
 let stickers = document.querySelector('#sticker');
 stickers.addEventListener('click', ()=>{
+  console.log(234567890);
     let url = 'https://emoji-api.com/emojis?access_key=cf4a493302cc51c36d80aaaad6b102d9062df416';
     axios.get(url).then(imojis)
 });
@@ -380,29 +406,38 @@ let sendMessage = (response) =>{
       }
     }
     for (user of Allmessage){
-        let MyMessage = document.querySelector('#writeMessage');
         let spaceMessage = document.querySelector('.spaceMessage');
         let Message = document.createElement('div');
         let FriMessage = document.createElement('div');
         FriMessage.className = 'FriMessage';
         Message.className = 'myMessage';
         
-        let span = document.createElement('span');
-        span.textContent = user.time;
         let P = document.createElement('p');
         P.textContent = user.message;
-        
+        if (user.bold === 'bold'){
+          P.style.fontWeight = 'bold';
+        }
+        if (user.italic === 'italic'){
+          P.style.fontStyle = 'italic';
+        }
+        if (user.underline === 'underline'){
+          P.style.textDecoration = 'underline';
+        }
+        let span = document.createElement('span');
+        span.textContent = user.time;
+
         let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
         if (user.message !== ''){
             if (user.user === onwUser.username){
+              
                 Message.appendChild(P);
-                spaceMessage.appendChild(span);
+                Message.appendChild(span);
                 spaceMessage.appendChild(Message);
 
             } else {
                 FriMessage.appendChild(P);
+                FriMessage.appendChild(span);
                 spaceMessage.appendChild(FriMessage);
-                spaceMessage.appendChild(span);
 
             }
         }
@@ -418,12 +453,27 @@ let Textmessage = (response) =>{
     let friAccount = JSON.parse(localStorage.getItem("messageWith"));
     let today = new Date();
     let date = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let Tobold = '';
+    if (setTobold === false){
+      Tobold = 'bold';
+    }
+    let Toitalic = '';
+    if (setToitalic === false){
+      Toitalic = 'italic';
+    }
+    let Tounderline = '';
+    if (setTounderline === false){
+      Tounderline = 'underline';
+    }
     let ObjectOfmessage = {
         user1: MyAccount.username,
         user2: friAccount.username,
         messages: [{
             user: MyAccount.username,
             time: date,
+            bold: Tobold,
+            italic: Toitalic,
+            underline: Tounderline,
             message: MyMessage.value
         }]
 
@@ -471,14 +521,55 @@ let search_chat = () => {
 // ...................................................................................................................................
 let set_bold = (e) =>{
   e.preventDefault();
-  bold.style.border = '1.5px solid black';
-  
+  let MyMessage = document.querySelector('#writeMessage');
+  if (setTobold){
+    bold.style.border = '1.5px solid black';
+    setTobold = false;
+    MyMessage.style.fontWeight = 'bold';
+  }else{
+    bold.style.border = '1px solid gray';
+    MyMessage.style.fontWeight = 'none';
+    setTobold = true;
+  }
+
+}
+// ...................................................................................................................................
+let set_italic = (e) =>{
+  e.preventDefault();
+  let MyMessage = document.querySelector('#writeMessage');
+  if (setToitalic){
+    italic.style.border = '1.5px solid black';
+    setToitalic = false;
+    MyMessage.style.fontStyle = 'italic';
+  }else{
+    italic.style.border = '1px solid gray';
+    MyMessage.style.fontStyle = 'none';
+    setToitalic = true;
+  }
+
+}
+// ...................................................................................................................................
+let set_underline = (e) =>{
+  e.preventDefault();
+  let MyMessage = document.querySelector('#writeMessage');
+  if (setTounderline){
+    underline.style.border = '1.5px solid black';
+    setTounderline = false;
+    MyMessage.style.textDecoration = 'underline';
+  }else{
+    underline.style.border = '1px solid gray';
+    MyMessage.style.textDecoration = 'none';
+    setTounderline = true;
+  }
+
 }
 //  --------------------------------------------------------------------------------------------------------------------------------
 let Mymode = true;
 let in_relation = true;
 let my_chat = false;
-
+let setTobold = true;
+let setToitalic = true;
+let setTounderline = true;
 let word_friName = '';
 
 let all_message = [];
@@ -496,6 +587,12 @@ btn_Send.addEventListener('click', Send);
 
 let bold = document.querySelector('#bold');
 bold.addEventListener('click', set_bold);
+
+let italic = document.querySelector('#italic');
+italic.addEventListener('click', set_italic);
+
+let underline = document.querySelector('#underline');
+underline.addEventListener('click', set_underline);
 
 let search = document.querySelector('#search');
 search.addEventListener('keyup', search_chat);
