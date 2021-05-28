@@ -8,7 +8,7 @@ let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
 function login(e) {
     e.preventDefault();
     // 1- TODO: Create the REQUEST
-    let querry = GET_LOGIN_REQUEST+'/login?username='+username.value+ '&password=' + password.value;
+    let querry = GET_LOGIN_REQUEST+'login?username='+username.value+ '&password=' + password.value;
     axios.get(querry).then((response) => {
       let isValid = response.data.isValid;
       let text = "not vlaid";
