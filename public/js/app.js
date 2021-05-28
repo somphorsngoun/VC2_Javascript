@@ -1,7 +1,8 @@
 
-const IP = "192.168.1.22";
-const PORT = 5000;
-const GET_LOGIN_REQUEST = "http://" + IP + ":" + PORT ;
+// const IP = "192.168.1.22";
+// const PORT = 5000;
+// const GET_LOGIN_REQUEST = "http://" + IP + ":" + PORT ;
+let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
 
 // ..................................................................................................................................
 function login(e) {

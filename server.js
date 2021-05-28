@@ -61,8 +61,6 @@ app.get('/AllUsers', (req, res) => {
 app.post('/addTofriend', (req,res) =>{
   let Username = req.body.username;
   let Userpass = req.body.password;
-  console.log(req.body);
-  console.log(123);
   my_data = req.body.my_userData;
   let Friend = {};
   let IsTrue = true;

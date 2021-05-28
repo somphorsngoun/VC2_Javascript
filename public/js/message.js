@@ -6,23 +6,67 @@ let Start = document.querySelector('.start');
 let space_Message = document.querySelector('.main');
 let user_chatWith = localStorage.getItem('chat_with');
 
-
 let dataUser = JSON.parse(localStorage.getItem('UserInfo'));
 let UserProfile = document.querySelector('.Profile');
 let UserName = document.querySelector('#Name');
 UserName.textContent = dataUser.username;
 UserProfile.src = dataUser.url;
 
+let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/'
 
-const IP = "192.168.1.3";
-const PORT = 5000;
-const GET_LOGIN_REQUEST = "http://" + IP + ":" + PORT ;
 
 // let my_url = 'http://192.168.2.5:5000/users';
 // let my_user = JSON.parse(localStorage.getItem('UserInfo'));
 // axios.post(my_url, my_user)
+// ..............................................................................................................................................
 
+let writeMessage = (Allmessage) => { 
+  let lastMessage = {};
+  for (user of Allmessage){
+    let spaceMessage = document.querySelector('.spaceMessage');
+    let Message = document.createElement('div');
+    let FriMessage = document.createElement('div');
+    FriMessage.className = 'FriMessage';
+    Message.className = 'myMessage';
 
+    let P = document.createElement('p');
+    P.textContent = user.message;
+    if (user.bold === 'bold'){
+      P.style.fontWeight = 'bold';
+    }
+    if (user.italic === 'italic'){
+      P.style.fontStyle = 'italic';
+    }
+    if (user.underline === 'underline'){
+      P.style.textDecoration = 'underline';
+    }
+    let span = document.createElement('span');
+    span.textContent = user.time;
+    let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
+    if (user.user === onwUser.username){
+      if (user.message !== ''){
+        Message.appendChild(P);
+        Message.appendChild(span);
+        spaceMessage.appendChild(Message);
+      }
+
+    } else {
+      if (user.message !== ''){
+        FriMessage.appendChild(P);
+        spaceMessage.appendChild(FriMessage);
+        FriMessage.appendChild(span);
+      }
+
+    }
+    in_relation = false;
+    lastMessage = user;
+  }
+  // let checkMessage = ;
+  // if (lastMessage.user === ){
+
+  // }
+}
+// ..............................................................................................................................................
 let refresh = (response) => {
   let Allmessage = response.data;
   let old_message = document.querySelectorAll('.myMessage');
@@ -35,51 +79,11 @@ let refresh = (response) => {
     value.remove();
 
   }
-  for (user of Allmessage){
-      let MyMessage = document.querySelector('#writeMessage');
-      let spaceMessage = document.querySelector('.spaceMessage');
-      let Message = document.createElement('div');
-      let FriMessage = document.createElement('div');
-      FriMessage.className = 'FriMessage';
-      Message.className = 'myMessage';
-
-      let P = document.createElement('p');
-      P.textContent = user.message;
-      if (user.bold === 'bold'){
-        P.style.fontWeight = 'bold';
-      }
-      if (user.italic === 'italic'){
-        P.style.fontStyle = 'italic';
-      }
-      if (user.underline === 'underline'){
-        P.style.textDecoration = 'underline';
-      }
-      let span = document.createElement('span');
-      span.textContent = user.time;
-      let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
-      if (user.user === onwUser.username){
-        if (user.message !== ''){
-          Message.appendChild(P);
-          Message.appendChild(span);
-          spaceMessage.appendChild(Message);
-        }
-
-      } else {
-        if (user.message !== ''){
-          FriMessage.appendChild(P);
-          spaceMessage.appendChild(FriMessage);
-          FriMessage.appendChild(span);
-        }
-
-      }
-      in_relation = false;
-  
-
-  }
+  writeMessage(Allmessage);
 }
 
 let send_message = () =>{
-  let Allmessage = 'http://192.168.1.22:5000/messages'; 
+  let Allmessage = GET_LOGIN_REQUEST + 'messages'; 
   axios
     .get(Allmessage)
     .then(refresh)
@@ -98,46 +102,8 @@ let sendmessage = (response) =>{
     }
   }
   if (in_relation){
-    for (user of Allmessage){
-      let MyMessage = document.querySelector('#writeMessage');
-      let spaceMessage = document.querySelector('.spaceMessage');
-      let Message = document.createElement('div');
-      let FriMessage = document.createElement('div');
-      FriMessage.className = 'FriMessage';
-      Message.className = 'myMessage';
-
-      let P = document.createElement('p');
-      P.textContent = user.message;
-      if (user.bold === 'bold'){
-        P.style.fontWeight = 'bold';
-      }
-      if (user.italic === 'italic'){
-        P.style.fontStyle = 'italic';
-      }
-      if (user.underline === 'underline'){
-        P.style.textDecoration = 'underline';
-      }
-      let span = document.createElement('span');
-      span.textContent = user.time;
-      let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
-      if (user.user === onwUser.username){
-        if (user.message !== ''){
-          Message.appendChild(P);
-          Message.appendChild(span);
-          spaceMessage.appendChild(Message);
-        }
-
-      } else {
-        if (user.message !== ''){
-          FriMessage.appendChild(P);
-          FriMessage.appendChild(span);
-          spaceMessage.appendChild(FriMessage);
-        }
-
-      }
-      in_relation = false;
-      my_chat = true;
-  }
+    writeMessage(Allmessage);
+    my_chat = true;
 
   }
   
@@ -160,7 +126,7 @@ let text_message = () =>{
 
     }
     console.log(ObjectOfmessage);
-    let URL = 'http://192.168.1.22:5000/message';
+    let URL = GET_LOGIN_REQUEST + 'message';
 
     axios.post(URL, ObjectOfmessage).then(sendmessage)
     MyMessage.value = '';
@@ -203,6 +169,7 @@ let ChatWithtFri = (event) => {
 let MyFri = (response) => {
     let Myfriend = response.data;
     console.log(Myfriend);
+    console.log(Myfriend);
     let MyFriends = document.querySelector('.MyFriends');
     let Remove = document.querySelectorAll('.MyFriends .OneUser')
     for (fri of Remove){
@@ -233,7 +200,7 @@ let UserFriend = () =>{
     let MyFriends = document.querySelector('.MyFriends');
     MyFriends.style.display = 'block';
     Friends.style.display = 'none';
-    let URL = 'http://192.168.1.22:5000/myFri';
+    let URL = GET_LOGIN_REQUEST + 'myFri';
     let User = JSON.parse(localStorage.getItem('UserInfo'));
     axios.post(URL,User).then(MyFri)
    }
@@ -265,7 +232,7 @@ let selectFri = (event) =>{
     let getUserpass = event.target.children[2].textContent;
     let getUserpic = event.target.children[3].textContent;
     console.log(getUsername, getUserpass);
-    let url = 'http://192.168.1.22:5000/addTofriend';
+    let url = GET_LOGIN_REQUEST + 'addTofriend';
     let UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
     console.log(UserInfo);
     let Object = {
@@ -279,7 +246,7 @@ let selectFri = (event) =>{
    let MyFriends = document.querySelector('.MyFriends');
    MyFriends.appendChild(createFriend(Object));
    localStorage.setItem('messageWith', JSON.stringify(Object));
-   let URL = 'http://192.168.1.22:5000/chating';
+   let URL = GET_LOGIN_REQUEST + 'chating';
      axios.post(URL, Object).then(Chat)
    
    let main = document.querySelector('.main');
@@ -358,7 +325,7 @@ let createFriend = (user) => {
   let AddFriend = () => {
     let MyProfile = document.querySelector('.MyProfile');
     MyProfile.style.display = 'none';
-    let URL = 'http://192.168.1.22:5000/AllUsers';
+    let URL = GET_LOGIN_REQUEST + 'AllUsers';
     axios.get(URL).then(AllUser)
   }
 
@@ -366,34 +333,37 @@ let createFriend = (user) => {
 let imojis = (response) =>{
     let allSticker = response.data;
     let showImoji = document.querySelector('.showImoji');
-    if (emojiShow){
-        emojiShow = false
-        // let showImoji = document.querySelector('.showImoji');
-        showImoji.style.display = 'block';
-        for (let stick of allSticker){
-            let span = document.createElement('span');
-            span.textContent = stick.character;
-            showImoji.appendChild(span);
-        }
-        let clickemoji = document.querySelectorAll('.showImoji span');
-        for (oneEmoji of clickemoji){
-            oneEmoji.addEventListener('click',(event)=>{
-                let MyMessage = document.querySelector('#writeMessage');
-                MyMessage.value += event.target.textContent;
-            })
-        }
-    }else{
-        showImoji.style.display = 'none';
+    
+    // let showImoji = document.querySelector('.showImoji');
+    for (let stick of allSticker){
+        let span = document.createElement('span');
+        span.textContent = stick.character;
+        showImoji.appendChild(span);
     }
+    let clickemoji = document.querySelectorAll('.showImoji span');
+    for (oneEmoji of clickemoji){
+        oneEmoji.addEventListener('click',(event)=>{
+            let MyMessage = document.querySelector('#writeMessage');
+            MyMessage.value += event.target.textContent;
+        })
+    }
+    
 }
 
 let emojiShow = true;
 let stickers = document.querySelector('#sticker');
 stickers.addEventListener('click', ()=>{
-  console.log(234567890);
-    let url = 'https://emoji-api.com/emojis?access_key=cf4a493302cc51c36d80aaaad6b102d9062df416';
-    axios.get(url).then(imojis)
+  let showImoji = document.querySelector('.showImoji');
+  if (emojiShow){
+    emojiShow = false
+    showImoji.style.display = 'block'; 
+  }else{
+    showImoji.style.display = 'none';
+    emojiShow = true;
+  } 
 });
+let url = 'https://emoji-api.com/emojis?access_key=cf4a493302cc51c36d80aaaad6b102d9062df416';
+axios.get(url).then(imojis)
 // .......................................................................................................................
 let sendMessage = (response) =>{
     let Allmessage = response.data;
@@ -405,43 +375,8 @@ let sendMessage = (response) =>{
 
       }
     }
-    for (user of Allmessage){
-        let spaceMessage = document.querySelector('.spaceMessage');
-        let Message = document.createElement('div');
-        let FriMessage = document.createElement('div');
-        FriMessage.className = 'FriMessage';
-        Message.className = 'myMessage';
-        
-        let P = document.createElement('p');
-        P.textContent = user.message;
-        if (user.bold === 'bold'){
-          P.style.fontWeight = 'bold';
-        }
-        if (user.italic === 'italic'){
-          P.style.fontStyle = 'italic';
-        }
-        if (user.underline === 'underline'){
-          P.style.textDecoration = 'underline';
-        }
-        let span = document.createElement('span');
-        span.textContent = user.time;
-
-        let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
-        if (user.message !== ''){
-            if (user.user === onwUser.username){
-              
-                Message.appendChild(P);
-                Message.appendChild(span);
-                spaceMessage.appendChild(Message);
-
-            } else {
-                FriMessage.appendChild(P);
-                FriMessage.appendChild(span);
-                spaceMessage.appendChild(FriMessage);
-
-            }
-        }
-    }
+    writeMessage(Allmessage);
+    
     // location.reload();
     
 }
@@ -478,7 +413,7 @@ let Textmessage = (response) =>{
         }]
 
     }
-    let URL = 'http://192.168.1.22:5000/message';
+    let URL = GET_LOGIN_REQUEST + 'message';
 
     axios.post(URL, ObjectOfmessage).then(sendMessage)
     MyMessage.value = '';
@@ -488,7 +423,7 @@ let Textmessage = (response) =>{
 let Send = (e) =>{
     e.preventDefault();
     
-    let url = 'http://192.168.1.22:5000/chating';
+    let url = GET_LOGIN_REQUEST + 'chating';
     axios.get(url).then(Textmessage)
 
   }
@@ -503,7 +438,7 @@ let checked_name = (word) =>{
 // .................................................................................................................................
 let same_name = (word) => {
   
-  let URL = GET_LOGIN_REQUEST + '/AllUsers';
+  let URL = GET_LOGIN_REQUEST + 'AllUsers';
   axios.get(URL).then(chose_yourphoto)
   // for (user of all_user){
   //   let name = user.username.toLocaleLowerCase();
@@ -581,6 +516,7 @@ addFriedns.addEventListener('click', AddFriend);
 
 let User_icon = document.querySelector('#user');
 User_icon.addEventListener('click', UserFriend);
+UserFriend();
 
 let btn_Send = document.querySelector('#Send');
 btn_Send.addEventListener('click', Send);
