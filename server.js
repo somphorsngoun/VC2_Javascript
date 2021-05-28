@@ -17,7 +17,6 @@ app.use("/login", (req, res) => {
     let username = req.query.username;
     let password = req.query.password;
     //2. Check user and password if valid return true otherwise return false.
-    console.log(users);
     let isValid = false;
     for (let user of users){
       if (username === user.username && password === user.password){
@@ -25,7 +24,11 @@ app.use("/login", (req, res) => {
         my_data = user;
       }
     }
-    res.send(isValid);
+    let login = {
+      myUser: my_data,
+      isValid: isValid
+    }
+    res.send(login);
  });
 
 app.post('/register', (req,res) => {
@@ -52,12 +55,14 @@ app.post('/register', (req,res) => {
 // })
 
 app.get('/AllUsers', (req, res) => {
-  console.log(users);
   res.send(users);
 })
+
 app.post('/addTofriend', (req,res) =>{
   let Username = req.body.username;
   let Userpass = req.body.password;
+  console.log(req.body);
+  console.log(123);
   my_data = req.body.my_userData;
   let Friend = {};
   let IsTrue = true;
@@ -105,14 +110,12 @@ app.post('/chating', (req, res) => {
   Chating = req.body;
 })
 app.get('/chating', (req, res) => {
-    console.log(Chating);
     res.send(Chating);
 })
 
 
 app.post('/message', (req, res) =>{
   let Message = req.body;
-  console.log(123);
   let chatWith = [];
   let isTrue = true;
   let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
@@ -135,6 +138,17 @@ app.post('/message', (req, res) =>{
   fs.writeFileSync('user_message.json', JSON.stringify(Usermessage));
   res.send(chatWith);
 })
-app.get('/message', (req, res) => {
+app.get('/messages', (req, res) => {
   res.send(JSON.parse(fs.readFileSync('message.json')));
 })
+
+// app.post('/search_fri', (req, res)=> {
+//   let user = req.body;
+//   console.log(users); 
+//   for (oneUser of users){
+//     if (user.username === oneUser.username && user.password === oneUser.password){
+//       res.send(oneUser.friends);
+//     }
+//   }
+  
+// })

@@ -66,9 +66,11 @@ let refresh = (response) => {
 }
 
 let send_message = () =>{
-    let Allmessage = GET_LOGIN_REQUEST +'/message';
+    let Allmessage = 'http://192.168.1.22:5000/messages';
     
-  axios.get(Allmessage).then(refresh)
+  axios
+    .get(Allmessage)
+    .then(refresh)
 
     
 }
@@ -133,7 +135,7 @@ let text_message = () =>{
 
     }
     console.log(ObjectOfmessage);
-    let URL = GET_LOGIN_REQUEST + '/message';
+    let URL = 'http://192.168.1.22:5000/message';
 
     axios.post(URL, ObjectOfmessage).then(sendmessage)
     MyMessage.value = '';
@@ -175,6 +177,7 @@ let ChatWithtFri = (event) => {
 // ...................................................................................................
 let MyFri = (response) => {
     let Myfriend = response.data;
+    console.log(Myfriend);
     let MyFriends = document.querySelector('.MyFriends');
     let Remove = document.querySelectorAll('.MyFriends .OneUser')
     for (fri of Remove){
@@ -205,7 +208,7 @@ let UserFriend = () =>{
     let MyFriends = document.querySelector('.MyFriends');
     MyFriends.style.display = 'block';
     Friends.style.display = 'none';
-    let URL = GET_LOGIN_REQUEST + '/myFri';
+    let URL = 'http://192.168.1.22:5000/myFri';
     let User = JSON.parse(localStorage.getItem('UserInfo'));
     axios.post(URL,User).then(MyFri)
    }
@@ -232,11 +235,12 @@ let selectMode = () =>{
 // ...................................................................................................
 let selectFri = (event) =>{
     localStorage.setItem('chat_with', false);
+    console.log(123);
     let getUsername = event.target.children[1].textContent;
     let getUserpass = event.target.children[2].textContent;
     let getUserpic = event.target.children[3].textContent;
     console.log(getUsername, getUserpass);
-    let url = GET_LOGIN_REQUEST +'/addTofriend';
+    let url = 'http://192.168.1.22:5000/addTofriend';
     let UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
     console.log(UserInfo);
     let Object = {
@@ -250,7 +254,7 @@ let selectFri = (event) =>{
    let MyFriends = document.querySelector('.MyFriends');
    MyFriends.appendChild(createFriend(Object));
    localStorage.setItem('messageWith', JSON.stringify(Object));
-   let URL = GET_LOGIN_REQUEST + '/chating';
+   let URL = 'http://192.168.1.22:5000/chating';
      axios.post(URL, Object).then(Chat)
    
    let main = document.querySelector('.main');
@@ -304,7 +308,7 @@ let createFriend = (user) => {
 // ..........................................................................................................................................
   let AllUser = (response) =>{
     let userInfo = response.data;
-    console.log(userInfo);
+    console.log(321);
     let MyUser = JSON.parse(localStorage.getItem('UserInfo'));
     let Friends = document.querySelector('.Friends');
     let MyFriends = document.querySelector('.MyFriends');
@@ -316,7 +320,7 @@ let createFriend = (user) => {
       fri.remove();
     }
     for (let user of userInfo){
-      console.log(user.username,MyUser.username);
+      console.log(user.url);
       if (user.username !== MyUser.username || user.password !== MyUser.password){
         Friends.appendChild(createFriend(user));
 
@@ -329,8 +333,7 @@ let createFriend = (user) => {
   let AddFriend = () => {
     let MyProfile = document.querySelector('.MyProfile');
     MyProfile.style.display = 'none';
-
-    let URL = GET_LOGIN_REQUEST + '/AllUsers';
+    let URL = 'http://192.168.1.22:5000/AllUsers';
     axios.get(URL).then(AllUser)
   }
 
@@ -369,41 +372,41 @@ stickers.addEventListener('click', ()=>{
 let sendMessage = (response) =>{
     let Allmessage = response.data;
     all_message = Allmessage;
-    // if (my_chat){
-    //   let old_message = document.querySelectorAll('.myMessage');
-    //   for (value of old_message){
-    //     value.remove();
+    if (my_chat){
+      let old_message = document.querySelectorAll('.myMessage');
+      for (value of old_message){
+        value.remove();
 
-    //   }
-    // }
-    // for (user of Allmessage){
-    //     let MyMessage = document.querySelector('#writeMessage');
-    //     let spaceMessage = document.querySelector('.spaceMessage');
-    //     let Message = document.createElement('div');
-    //     let FriMessage = document.createElement('div');
-    //     FriMessage.className = 'FriMessage';
-    //     Message.className = 'myMessage';
+      }
+    }
+    for (user of Allmessage){
+        let MyMessage = document.querySelector('#writeMessage');
+        let spaceMessage = document.querySelector('.spaceMessage');
+        let Message = document.createElement('div');
+        let FriMessage = document.createElement('div');
+        FriMessage.className = 'FriMessage';
+        Message.className = 'myMessage';
         
-    //     let span = document.createElement('span');
-    //     span.textContent = user.time;
-    //     let P = document.createElement('p');
-    //     P.textContent = user.message;
+        let span = document.createElement('span');
+        span.textContent = user.time;
+        let P = document.createElement('p');
+        P.textContent = user.message;
         
-    //     let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
-    //     if (user.message !== ''){
-    //         if (user.user === onwUser.username){
-    //             Message.appendChild(P);
-    //             spaceMessage.appendChild(span);
-    //             spaceMessage.appendChild(Message);
+        let onwUser = JSON.parse(localStorage.getItem('UserInfo'));
+        if (user.message !== ''){
+            if (user.user === onwUser.username){
+                Message.appendChild(P);
+                spaceMessage.appendChild(span);
+                spaceMessage.appendChild(Message);
 
-    //         } else {
-    //             FriMessage.appendChild(P);
-    //             spaceMessage.appendChild(FriMessage);
-    //             spaceMessage.appendChild(span);
+            } else {
+                FriMessage.appendChild(P);
+                spaceMessage.appendChild(FriMessage);
+                spaceMessage.appendChild(span);
 
-    //         }
-    //     }
-    // }
+            }
+        }
+    }
     // location.reload();
     
 }
@@ -425,7 +428,7 @@ let Textmessage = (response) =>{
         }]
 
     }
-    let URL = GET_LOGIN_REQUEST + '/message';
+    let URL = 'http://192.168.1.22:5000/message';
 
     axios.post(URL, ObjectOfmessage).then(sendMessage)
     MyMessage.value = '';
@@ -435,18 +438,48 @@ let Textmessage = (response) =>{
 let Send = (e) =>{
     e.preventDefault();
     
-    let url = GET_LOGIN_REQUEST + '/chating';
+    let url = 'http://192.168.1.22:5000/chating';
     axios.get(url).then(Textmessage)
 
   }
 // .................................................................................................................................
-let chose_yourphoto = () =>{
-
+let chose_yourphoto = (response) =>{
+  console.log(321);
+  localStorage.setItem('AllOfuser', JSON.stringify(response.data));
+}
+let checked_name = (word) =>{
+  console.log(word);
+}
+// .................................................................................................................................
+let same_name = (word) => {
+  
+  let URL = GET_LOGIN_REQUEST + '/AllUsers';
+  axios.get(URL).then(chose_yourphoto)
+  // for (user of all_user){
+  //   let name = user.username.toLocaleLowerCase();
+  // //   if (name.indexOf(word)){
+      
+  // // }
+  // }
+  checked_name(word);
+}
+// .................................................................................................................................
+let search_chat = () => {
+  let word = search.value.toLocaleLowerCase();
+  same_name(word);
+}
+// ...................................................................................................................................
+let set_bold = (e) =>{
+  e.preventDefault();
+  bold.style.border = '1.5px solid black';
+  
 }
 //  --------------------------------------------------------------------------------------------------------------------------------
 let Mymode = true;
 let in_relation = true;
 let my_chat = false;
+
+let word_friName = '';
 
 let all_message = [];
 let Mode = document.querySelector('#mode');
@@ -461,12 +494,16 @@ User_icon.addEventListener('click', UserFriend);
 let btn_Send = document.querySelector('#Send');
 btn_Send.addEventListener('click', Send);
 
-let choose_file = document.querySelector('#photo');
-choose_file.addEventListener('click', chose_yourphoto);//..............
+let bold = document.querySelector('#bold');
+bold.addEventListener('click', set_bold);
 
+let search = document.querySelector('#search');
+search.addEventListener('keyup', search_chat);
+
+let choose_file = document.querySelector('#photo');
+choose_file.addEventListener('click', chose_yourphoto);//.............
 
 if (user_chatWith){
-  console.log(123);
   Start.style.display = 'block';
   space_Message.style.display = 'none';
 }else {

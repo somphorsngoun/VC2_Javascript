@@ -1,5 +1,5 @@
 
-const IP = "192.168.1.3";
+const IP = "192.168.1.22";
 const PORT = 5000;
 const GET_LOGIN_REQUEST = "http://" + IP + ":" + PORT ;
 
@@ -9,15 +9,14 @@ function login(e) {
     // 1- TODO: Create the REQUEST
     let querry = GET_LOGIN_REQUEST+'/login?username='+username.value+ '&password=' + password.value;
     axios.get(querry).then((response) => {
-      let isValid = response.data;
+      let isValid = response.data.isValid;
       let text = "not vlaid";
       let color = "red";
       my_account = false;
       if (isValid){
         IsTrue = true;
+        localStorage.setItem('UserInfo', JSON.stringify(response.data.myUser));
         window.location.href = '../about.html';
-        
-
       }
       message.textContent = text;
       message.style.color = color;
@@ -27,35 +26,31 @@ function login(e) {
 
 // ..............................................................................................
 
-// ..........................................................................................................
-function preview_image(event) 
-        {
-          set_photo = false;
-          let reader = new FileReader();
-          let output = document.querySelector('.profile');
-          reader.onload = function()
-            {
-              output.src = reader.result;
-              dataUser = {
-                username: UserName.value,
-                password: Create_PassWord.value,
-                email: Email.value,
-                url: output.src,
-                friends: []
-                }
-              localStorage.setItem('UserInfo', JSON.stringify(dataUser));
+// // ..........................................................................................................
+// function preview_image(event) 
+//         {
+//           set_photo = false;
+//           let reader = new FileReader();
+//           let output = document.querySelector('.profile');
+//           reader.onload = function()
+//             {
+//               output.src = reader.result;
+//               dataUser = {
+//                 username: UserName.value,
+//                 password: Create_PassWord.value,
+//                 email: Email.value,
+//                 url: output.src,
+//                 friends: []
+//                 }
+        //       localStorage.setItem('UserInfo', JSON.stringify(dataUser));
             
-              let url = GET_LOGIN_REQUEST + '/register';
-      
-      
-              axios
-                  .post(url, dataUser)
+        //       let url = GET_LOGIN_REQUEST + '/register';
+        //       axios
+        //           .post(url, dataUser)
 
-              }
-          reader.readAsDataURL(event.target.files[0]);
-            
-            
-        }
+        //       }
+        //   reader.readAsDataURL(event.target.files[0]);
+        // }
 // ................................................................................................
 let register = (e) =>{
     e.preventDefault();
@@ -77,11 +72,11 @@ let register = (e) =>{
 
         // let br2 = document.createElement('br');
         // set_profile.appendChild(br2);
-        let choosePic = document.createElement('input');
-        choosePic.type = 'file';
-        choosePic.id = 'chooseImage';
-        set_profile.appendChild(choosePic);
-        
+        // let choosePic = document.createElement('input');
+        // choosePic.type = 'file';
+        // choosePic.id = 'chooseImage';
+        // set_profile.appendChild(choosePic);
+
         let A = document.createElement('a');
         A.href = 'about.html';
         set_profile.appendChild(A);
@@ -91,9 +86,9 @@ let register = (e) =>{
         Countinuce.textContent = 'Coutinuce';
         A.appendChild(Countinuce);
 
-        choosePic.addEventListener('change', preview_image);
+        // choosePic.addEventListener('change', preview_image);
         
-      if (set_photo){
+      // if (set_photo){
         dataUser = {
           username: UserName.value,
           password: Create_PassWord.value,
@@ -102,13 +97,10 @@ let register = (e) =>{
           friends: []
         }
         localStorage.setItem('UserInfo', JSON.stringify(dataUser));
-      
         let url = GET_LOGIN_REQUEST + '/register';
-
-
         axios
             .post(url, dataUser)
-      }
+      // }
         
     }
     
