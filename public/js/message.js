@@ -12,16 +12,14 @@ let UserName = document.querySelector('#Name');
 UserName.textContent = dataUser.username;
 UserProfile.src = dataUser.url;
 
-let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/'
+// let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
+let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
 
 
-// let my_url = 'http://192.168.2.5:5000/users';
-// let my_user = JSON.parse(localStorage.getItem('UserInfo'));
-// axios.post(my_url, my_user)
 // ..............................................................................................................................................
 
 let writeMessage = (Allmessage) => { 
-  let lastMessage = {};
+  let fri_user = JSON.parse(localStorage.getItem('messageWith'));
   for (user of Allmessage){
     let spaceMessage = document.querySelector('.spaceMessage');
     let Message = document.createElement('div');
@@ -48,6 +46,7 @@ let writeMessage = (Allmessage) => {
         Message.appendChild(P);
         Message.appendChild(span);
         spaceMessage.appendChild(Message);
+        P.style.background = dataUser.color;
       }
 
     } else {
@@ -55,16 +54,13 @@ let writeMessage = (Allmessage) => {
         FriMessage.appendChild(P);
         spaceMessage.appendChild(FriMessage);
         FriMessage.appendChild(span);
+        P.style.background = fri_user.color;
       }
 
     }
     in_relation = false;
     lastMessage = user;
   }
-  // let checkMessage = ;
-  // if (lastMessage.user === ){
-
-  // }
 }
 // ..............................................................................................................................................
 let refresh = (response) => {
@@ -91,47 +87,46 @@ let send_message = () =>{
     
 }
 // ............................................................................................................
-let sendmessage = (response) =>{
-  let Allmessage = response.data;
-  all_message = response.data;
-  if (my_chat){
-    let old_message = document.querySelectorAll('.myMessage');
-    for (value of old_message){
-      value.remove();
+// let sendmessage = (response) =>{
+//   let Allmessage = response.data;
+//   all_message = response.data;
+//   if (my_chat){
+//     let old_message = document.querySelectorAll('.myMessage');
+//     for (value of old_message){
+//       value.remove();
 
-    }
-  }
-  if (in_relation){
-    writeMessage(Allmessage);
-    my_chat = true;
+//     }
+//   }
+//   if (in_relation){
+//     writeMessage(Allmessage);
+//     my_chat = true;
 
-  }
+//   }
   
-}
-// ................................................................................................................
-let text_message = () =>{
-  console.log(12345567);
+// }
+// // ................................................................................................................
+// let text_message = () =>{
+//   console.log(12345567);
 
-    // let ChatWith = response.data;
-    let MyMessage = document.querySelector('#writeMessage');
-    let MyAccount = JSON.parse(localStorage.getItem("UserInfo"));
-    let friAccount = JSON.parse(localStorage.getItem("messageWith"));
-    let ObjectOfmessage = {
-        user1: MyAccount.username,
-        user2: friAccount.username,
-        messages: [{
-            user: MyAccount.username,
-            message: MyMessage.value
-        }]
+//     // let ChatWith = response.data;
+//     let MyMessage = document.querySelector('#writeMessage');
+//     let MyAccount = JSON.parse(localStorage.getItem("UserInfo"));
+//     let friAccount = JSON.parse(localStorage.getItem("messageWith"));
+//     let ObjectOfmessage = {
+//         user1: MyAccount.username,
+//         user2: friAccount.username,
+//         messages: [{
+//             user: MyAccount.username,
+//             message: MyMessage.value
+//         }]
 
-    }
-    console.log(ObjectOfmessage);
-    let URL = GET_LOGIN_REQUEST + 'message';
+//     }
+//     let URL = GET_LOGIN_REQUEST + 'message';
 
-    axios.post(URL, ObjectOfmessage).then(sendmessage)
-    MyMessage.value = '';
+//     axios.post(URL, ObjectOfmessage).then(sendmessage)
+//     MyMessage.value = '';
 
-}
+// }
 // .....................................................................................................
 let ChatWithtFri = (event) => {
     localStorage.setItem('chat_with', false);
@@ -152,7 +147,7 @@ let ChatWithtFri = (event) => {
     console.log(Object);
     // let url = GET_LOGIN_REQUEST + '/chating';
     // axios.post(url, Object).then(text_message)
-    text_message();
+    // text_message();
 
 
     let friProfile = document.querySelector('.user');
@@ -220,14 +215,21 @@ let selectMode = () =>{
     }
     
   }
+ //...............................................................................................................................
+ let acc_logout = () => {
+  let comfirm = confirm("Are you sure to logout your account");
+   if (comfirm){
+    window.location.href = '../index.html';
+   }
+ } 
+ //............................................................................................................................... 
   let Chat = (res) => {
       console.log(123);
   }
 
-// ...................................................................................................
+// ..............................................................................................................................
 let selectFri = (event) =>{
     localStorage.setItem('chat_with', false);
-    console.log(123);
     let getUsername = event.target.children[1].textContent;
     let getUserpass = event.target.children[2].textContent;
     let getUserpic = event.target.children[3].textContent;
@@ -334,7 +336,6 @@ let imojis = (response) =>{
     let allSticker = response.data;
     let showImoji = document.querySelector('.showImoji');
     
-    // let showImoji = document.querySelector('.showImoji');
     for (let stick of allSticker){
         let span = document.createElement('span');
         span.textContent = stick.character;
@@ -362,7 +363,7 @@ stickers.addEventListener('click', ()=>{
     emojiShow = true;
   } 
 });
-let url = 'https://emoji-api.com/emojis?access_key=cf4a493302cc51c36d80aaaad6b102d9062df416';
+let url = GET_LOGIN_REQUEST + 'emoji';
 axios.get(url).then(imojis)
 // .......................................................................................................................
 let sendMessage = (response) =>{
@@ -387,7 +388,7 @@ let Textmessage = (response) =>{
     let MyAccount = JSON.parse(localStorage.getItem("UserInfo"));
     let friAccount = JSON.parse(localStorage.getItem("messageWith"));
     let today = new Date();
-    let date = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let date = today.getHours() + ":" + today.getMinutes();
     let Tobold = '';
     if (setTobold === false){
       Tobold = 'bold';
@@ -505,7 +506,7 @@ let my_chat = false;
 let setTobold = true;
 let setToitalic = true;
 let setTounderline = true;
-let word_friName = '';
+let playSound = true;
 
 let all_message = [];
 let Mode = document.querySelector('#mode');
@@ -513,6 +514,9 @@ Mode.addEventListener('click', selectMode);
 
 let addFriedns = document.querySelector('#add');
 addFriedns.addEventListener('click', AddFriend);
+
+let logout = document.querySelector('#logout');
+logout.addEventListener('click', acc_logout);
 
 let User_icon = document.querySelector('#user');
 User_icon.addEventListener('click', UserFriend);
@@ -548,8 +552,9 @@ if (user_chatWith){
   friProfile.src = fri_account.url;
   let friName = document.querySelector('#name');
   friName.textContent = fri_account.username;
-  text_message();
+  // writeMessage();
 }
-
+let chatArea = document.querySelector('.spaceMessage');
+chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
 
 setInterval(send_message, 500);

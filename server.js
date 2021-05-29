@@ -34,6 +34,7 @@ app.use("/login", (req, res) => {
 app.post('/register', (req,res) => {
   let signin = req.body;
   let sameName = true;
+  console.log(req.body);
   if (users.length === 0){
     users.push(signin);
   }else{
@@ -48,6 +49,7 @@ app.post('/register', (req,res) => {
   }
 
   fs.writeFileSync('users_data.json', JSON.stringify(users));
+  res.send(users);
 })
  
 // app.post('/users', (req, res) => {
@@ -88,6 +90,27 @@ app.post('/addTofriend', (req,res) =>{
 
     }
   }
+  let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
+  let isTrue = true;
+  if (Usermessage.length !== 0){
+    for (user of Usermessage){
+      if (user.user1 === my_data.username && user.user2 === Username || user.user1 === Username && user.user2 === my_data.username){
+        fs.writeFileSync('message.json', JSON.stringify(user.messages)); 
+        isTrue = false;
+
+      }
+    }
+  }
+  if (isTrue){
+    let object = {
+      user1: my_data,
+      user2: Username,
+      messages:[]
+    }
+    fs.writeFileSync('message.json', JSON.stringify(object));
+
+  }
+
   fs.writeFileSync('users_data.json', JSON.stringify(users));
 
 })
@@ -119,20 +142,25 @@ app.post('/message', (req, res) =>{
   let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
   if (Usermessage.length === 0){
     Usermessage.push(Message);
+    fs.writeFileSync('message.json', JSON.stringify(Message.messages));
+    isTrue = false;
   }else {
     for (user of Usermessage){
       if (user.user1 === Message.user1 && user.user2 === Message.user2 || user.user1 === Message.user2 && user.user2 === Message.user1){
         user.messages.push(Message.messages[0]);
         isTrue = false;
         chatWith = user.messages;
+        fs.writeFileSync('message.json', JSON.stringify(user.messages));
+
 
       }
     }
   }
+  console.log(isTrue);
   if (isTrue){
+    console.log(123);
     Usermessage.push(Message);
   }
-  fs.writeFileSync('message.json', JSON.stringify(chatWith));
   fs.writeFileSync('user_message.json', JSON.stringify(Usermessage));
   res.send(chatWith);
 })
@@ -140,13 +168,7 @@ app.get('/messages', (req, res) => {
   res.send(JSON.parse(fs.readFileSync('message.json')));
 })
 
-// app.post('/search_fri', (req, res)=> {
-//   let user = req.body;
-//   console.log(users); 
-//   for (oneUser of users){
-//     if (user.username === oneUser.username && user.password === oneUser.password){
-//       res.send(oneUser.friends);
-//     }
-//   }
-  
-// })
+app.get('/emoji', (req, res)=> {
+  let sticker = JSON.parse(fs.readFileSync('emoji.json'));
+  res.send(sticker);
+})

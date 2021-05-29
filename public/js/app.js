@@ -1,8 +1,6 @@
 
-// const IP = "192.168.1.22";
-// const PORT = 5000;
-// const GET_LOGIN_REQUEST = "http://" + IP + ":" + PORT ;
-let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
+// let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
+let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
 
 // ..................................................................................................................................
 function login(e) {
@@ -18,6 +16,8 @@ function login(e) {
         IsTrue = true;
         localStorage.setItem('UserInfo', JSON.stringify(response.data.myUser));
         window.location.href = '../about.html';
+        text = 'You login success';
+        color = 'green';
       }
       message.textContent = text;
       message.style.color = color;
@@ -52,6 +52,8 @@ function login(e) {
         //       }
         //   reader.readAsDataURL(event.target.files[0]);
         // }
+
+
 // ................................................................................................
 let register = (e) =>{
     e.preventDefault();
@@ -71,13 +73,6 @@ let register = (e) =>{
         let br3 = document.createElement('br');
         set_profile.appendChild(br3);
 
-        // let br2 = document.createElement('br');
-        // set_profile.appendChild(br2);
-        // let choosePic = document.createElement('input');
-        // choosePic.type = 'file';
-        // choosePic.id = 'chooseImage';
-        // set_profile.appendChild(choosePic);
-
         let A = document.createElement('a');
         A.href = 'about.html';
         set_profile.appendChild(A);
@@ -86,22 +81,19 @@ let register = (e) =>{
         Countinuce.id = 'countinuce';
         Countinuce.textContent = 'Coutinuce';
         A.appendChild(Countinuce);
-
-        // choosePic.addEventListener('change', preview_image);
         
-      // if (set_photo){
         dataUser = {
           username: UserName.value,
           password: Create_PassWord.value,
           email: Email.value,
           url: '../image/user_girl.png',
+          color: color.value,
           friends: []
         }
         localStorage.setItem('UserInfo', JSON.stringify(dataUser));
-        let url = GET_LOGIN_REQUEST + '/register';
+        let URL = GET_LOGIN_REQUEST + 'register';
         axios
-            .post(url, dataUser)
-      // }
+            .post(URL, dataUser)
         
     }
     
@@ -138,6 +130,7 @@ const UserName = document.querySelector('#userName');
 const Create_PassWord = document.querySelector('#passWord');
 const Comfirm_PassWord = document.querySelector('#comfirm-passWord');
 const Email = document.querySelector('#email');
+const color = document.querySelector('#color');
 const wrong_password = document.querySelector('#wrong-password');
 
 btn_login.addEventListener("click", login);
