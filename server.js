@@ -1,3 +1,4 @@
+const { text } = require('express');
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -34,7 +35,6 @@ app.use("/login", (req, res) => {
 app.post('/register', (req,res) => {
   let signin = req.body;
   let sameName = true;
-  console.log(req.body);
   if (users.length === 0){
     users.push(signin);
   }else{
@@ -64,6 +64,7 @@ app.post('/addTofriend', (req,res) =>{
   let Username = req.body.username;
   let Userpass = req.body.password;
   my_data = req.body.my_userData;
+  // console.log(Username, Userpass);
   let Friend = {};
   let IsTrue = true;
   for (user of users){
@@ -75,8 +76,14 @@ app.post('/addTofriend', (req,res) =>{
     if (fri.username === my_data.username && fri.password === my_data.password){
       let friUser = {
         Name: Friend.username,
+        color: Friend.color,
         Password: Friend.password,
         url: Friend.url
+      }
+
+      if (fri.friends.length === 0){
+        fri.friends.push(friUser);
+        IsTrue = false;
       }
       for (user of fri.friends){
         if (user.Name === friUser.Name && user.Password === friUser.Password){
@@ -84,8 +91,9 @@ app.post('/addTofriend', (req,res) =>{
         }
       }
       if (IsTrue){
+        console.log(123321);
         fri.friends.push(friUser);
-
+        IsTrue = true;
       }
 
     }
@@ -103,11 +111,13 @@ app.post('/addTofriend', (req,res) =>{
   }
   if (isTrue){
     let object = {
-      user1: my_data,
+      user1: my_data.username,
       user2: Username,
       messages:[]
     }
-    fs.writeFileSync('message.json', JSON.stringify(object));
+    let array = JSON.parse(fs.readFileSync('user_message.json'));
+    array.push(object)
+    fs.writeFileSync('user_message.json', JSON.stringify(array));
 
   }
 
@@ -129,15 +139,31 @@ app.post('/myFri', (req, res) => {
 let Chating = {};
 app.post('/chating', (req, res) => {
   Chating = req.body;
+  res.send(Chating);
+
 })
 app.get('/chating', (req, res) => {
     res.send(Chating);
 })
 
+app.post('/checkChat', (req,res)=>{
+  let user_infor = req.body;
+  let all_message = JSON.parse(fs.readFileSync('user_message.json'));
+  for (oldmessage of all_message){
+    console.log(user_infor);
+    console.log(oldmessage);
+
+    if (user_infor.user1 === oldmessage.user1 && user_infor.user2 === oldmessage.user2 || user_infor.user1 === oldmessage.user2 && user_infor.user2 == oldmessage.user1){
+      fs.writeFileSync('message.json', JSON.stringify(oldmessage.messages));
+      console.log(123);
+      res.send(JSON.parse(fs.readFileSync('message.json')));
+    }
+  }
+})
+
 
 app.post('/message', (req, res) =>{
   let Message = req.body;
-  let chatWith = [];
   let isTrue = true;
   let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
   if (Usermessage.length === 0){
@@ -149,16 +175,13 @@ app.post('/message', (req, res) =>{
       if (user.user1 === Message.user1 && user.user2 === Message.user2 || user.user1 === Message.user2 && user.user2 === Message.user1){
         user.messages.push(Message.messages[0]);
         isTrue = false;
-        chatWith = user.messages;
         fs.writeFileSync('message.json', JSON.stringify(user.messages));
 
 
       }
     }
   }
-  console.log(isTrue);
   if (isTrue){
-    console.log(123);
     Usermessage.push(Message);
   }
   fs.writeFileSync('user_message.json', JSON.stringify(Usermessage));
@@ -171,4 +194,13 @@ app.get('/messages', (req, res) => {
 app.get('/emoji', (req, res)=> {
   let sticker = JSON.parse(fs.readFileSync('emoji.json'));
   res.send(sticker);
+})
+
+app.post('/fri_data', (req, res)=> {
+  let fri_infor = req.body;
+  for (user of users){
+    if (user.username === fri_infor.username && user.password === fri_data.password){
+      res.send(user);
+    }
+  }
 })

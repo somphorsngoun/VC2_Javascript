@@ -77,7 +77,7 @@ let refresh = (response) => {
   }
   writeMessage(Allmessage);
 }
-
+// .....................................................................................................................................
 let send_message = () =>{
   let Allmessage = GET_LOGIN_REQUEST + 'messages'; 
   axios
@@ -86,47 +86,6 @@ let send_message = () =>{
 
     
 }
-// ............................................................................................................
-// let sendmessage = (response) =>{
-//   let Allmessage = response.data;
-//   all_message = response.data;
-//   if (my_chat){
-//     let old_message = document.querySelectorAll('.myMessage');
-//     for (value of old_message){
-//       value.remove();
-
-//     }
-//   }
-//   if (in_relation){
-//     writeMessage(Allmessage);
-//     my_chat = true;
-
-//   }
-  
-// }
-// // ................................................................................................................
-// let text_message = () =>{
-//   console.log(12345567);
-
-//     // let ChatWith = response.data;
-//     let MyMessage = document.querySelector('#writeMessage');
-//     let MyAccount = JSON.parse(localStorage.getItem("UserInfo"));
-//     let friAccount = JSON.parse(localStorage.getItem("messageWith"));
-//     let ObjectOfmessage = {
-//         user1: MyAccount.username,
-//         user2: friAccount.username,
-//         messages: [{
-//             user: MyAccount.username,
-//             message: MyMessage.value
-//         }]
-
-//     }
-//     let URL = GET_LOGIN_REQUEST + 'message';
-
-//     axios.post(URL, ObjectOfmessage).then(sendmessage)
-//     MyMessage.value = '';
-
-// }
 // .....................................................................................................
 let ChatWithtFri = (event) => {
     localStorage.setItem('chat_with', false);
@@ -134,28 +93,39 @@ let ChatWithtFri = (event) => {
     space_Message.style.display = 'block';
     in_relation = true;
     localStorage.setItem('chat_with', false);
+    console.log(event.target.children);
+    // let getUserurl = event.target.children[0].src;
+    // console.log(getUserurl);
     let getUsername = event.target.children[1].textContent;
     let getUserpass = event.target.children[2].textContent;
     let getUserpic = event.target.children[3].textContent;
-
+    console.log(getUserpic);
+    let getUsercolor = event.target.children[4].textContent;
+    let userIfo = JSON.parse(localStorage.getItem('UserInfo'));
     let Object = {
-      username: getUsername,
-      password: getUserpass,
-      url: getUserpic
+      user1: userIfo.username,
+      user2: getUsername
     };
-    localStorage.setItem('messageWith', JSON.stringify(Object));
-    console.log(Object);
-    // let url = GET_LOGIN_REQUEST + '/chating';
-    // axios.post(url, Object).then(text_message)
+
+    let fri_object = {
+      username: getUsername,
+      url: getUserpic,
+      color: getUsercolor
+    }
+    localStorage.setItem('messageWith', JSON.stringify(fri_object));
+    let url = GET_LOGIN_REQUEST + 'checkChat';
+    axios.post(url, Object).then(refresh)
     // text_message();
 
-
+    
     let friProfile = document.querySelector('.user');
     friProfile.src = getUserpic;
     let friName = document.querySelector('#name');
     friName.textContent = getUsername;
     let fripass = document.querySelector('#userPass');
     fripass.textContent = getUserpass;
+    let fricolor = document.querySelector('#your_color');
+    fricolor.textContent = getUsercolor;
 
     
     
@@ -163,8 +133,6 @@ let ChatWithtFri = (event) => {
 // ...................................................................................................
 let MyFri = (response) => {
     let Myfriend = response.data;
-    console.log(Myfriend);
-    console.log(Myfriend);
     let MyFriends = document.querySelector('.MyFriends');
     let Remove = document.querySelectorAll('.MyFriends .OneUser')
     for (fri of Remove){
@@ -174,6 +142,7 @@ let MyFri = (response) => {
       let fridata = {
         username: fri.Name,
         password: fri.Password,
+        color: fri.color,
         url: fri.url
       }
       MyFriends.appendChild(createFriend(fridata));
@@ -233,14 +202,14 @@ let selectFri = (event) =>{
     let getUsername = event.target.children[1].textContent;
     let getUserpass = event.target.children[2].textContent;
     let getUserpic = event.target.children[3].textContent;
-    console.log(getUsername, getUserpass);
+    let getUsercolor = event.target.children[4].textContent;
     let url = GET_LOGIN_REQUEST + 'addTofriend';
     let UserInfo = JSON.parse(localStorage.getItem('UserInfo'));
-    console.log(UserInfo);
     let Object = {
         my_userData: UserInfo,
         username: getUsername,
         password: getUserpass,
+        color: getUsercolor,
         url: getUserpic
     };
    axios.post(url, Object)
@@ -248,8 +217,8 @@ let selectFri = (event) =>{
    let MyFriends = document.querySelector('.MyFriends');
    MyFriends.appendChild(createFriend(Object));
    localStorage.setItem('messageWith', JSON.stringify(Object));
-   let URL = GET_LOGIN_REQUEST + 'chating';
-     axios.post(URL, Object).then(Chat)
+  //  let URL = GET_LOGIN_REQUEST + 'chating';
+  //    axios.post(URL, Object).then(Chat)
    
    let main = document.querySelector('.main');
    main.style.display = 'block';
@@ -272,6 +241,7 @@ let addTofriend = () =>{
   }
 // ...................................................................................................
 let createFriend = (user) => {
+
     let Profile = document.createElement('div');
     Profile.className = 'myprofile';
     let User = document.createElement('div');
@@ -288,6 +258,9 @@ let createFriend = (user) => {
     let pic = document.createElement('p');
     pic.textContent = user.url;
     pic.id = 'image';
+    let your_color = document.createElement('p');
+    your_color.textContent = user.color;
+    your_color.id = 'your_color';
     let Sidebar = document.querySelector('.sidebar')
     Sidebar.appendChild(User);
     User.appendChild(Profile);
@@ -295,14 +268,15 @@ let createFriend = (user) => {
     Profile.appendChild(Name);
     Profile.appendChild(Password);
     Profile.appendChild(pic);
+    Profile.appendChild(your_color);
     let hr = document.createElement('hr');
     User.appendChild(hr);
+
     return User;
   }
 // ..........................................................................................................................................
   let AllUser = (response) =>{
     let userInfo = response.data;
-    console.log(321);
     let MyUser = JSON.parse(localStorage.getItem('UserInfo'));
     let Friends = document.querySelector('.Friends');
     let MyFriends = document.querySelector('.MyFriends');
@@ -314,7 +288,6 @@ let createFriend = (user) => {
       fri.remove();
     }
     for (let user of userInfo){
-      console.log(user.url);
       if (user.username !== MyUser.username || user.password !== MyUser.password){
         Friends.appendChild(createFriend(user));
 
@@ -377,9 +350,7 @@ let sendMessage = (response) =>{
       }
     }
     writeMessage(Allmessage);
-    
-    // location.reload();
-    
+        
 }
 
 let Textmessage = (response) =>{
@@ -428,32 +399,7 @@ let Send = (e) =>{
     axios.get(url).then(Textmessage)
 
   }
-// .................................................................................................................................
-let chose_yourphoto = (response) =>{
-  console.log(321);
-  localStorage.setItem('AllOfuser', JSON.stringify(response.data));
-}
-let checked_name = (word) =>{
-  console.log(word);
-}
-// .................................................................................................................................
-let same_name = (word) => {
-  
-  let URL = GET_LOGIN_REQUEST + 'AllUsers';
-  axios.get(URL).then(chose_yourphoto)
-  // for (user of all_user){
-  //   let name = user.username.toLocaleLowerCase();
-  // //   if (name.indexOf(word)){
-      
-  // // }
-  // }
-  checked_name(word);
-}
-// .................................................................................................................................
-let search_chat = () => {
-  let word = search.value.toLocaleLowerCase();
-  same_name(word);
-}
+
 // ...................................................................................................................................
 let set_bold = (e) =>{
   e.preventDefault();
@@ -533,12 +479,6 @@ italic.addEventListener('click', set_italic);
 
 let underline = document.querySelector('#underline');
 underline.addEventListener('click', set_underline);
-
-let search = document.querySelector('#search');
-search.addEventListener('keyup', search_chat);
-
-let choose_file = document.querySelector('#photo');
-choose_file.addEventListener('click', chose_yourphoto);//.............
 
 if (user_chatWith){
   Start.style.display = 'block';

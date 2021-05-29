@@ -328,7 +328,8 @@ form {
     background: black;
 } */
 #userPass,
-#image {
+#image,
+#your_color {
     display: none;
 }
 
