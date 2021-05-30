@@ -13,8 +13,8 @@ let UserName = document.querySelector('#Name');
 UserName.textContent = dataUser.username;
 UserProfile.src = dataUser.url;
 
-let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
-// let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
+// let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
+let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
 
 
 // display message..............................................................................................................................................
@@ -62,6 +62,8 @@ let writeMessage = (Allmessage) => {
     in_relation = false;
     lastMessage = user;
   }
+  let chatArea = document.querySelector('.spaceMessage');
+  chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
 }
 // get message and remove old message..............................................................................................................................................
 let refresh = (response) => {
@@ -484,7 +486,6 @@ if (user_chatWith){
   let friName = document.querySelector('#name');
   friName.textContent = fri_account.username;
 }
-let chatArea = document.querySelector('.spaceMessage');
-chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
+
 
 setInterval(send_message, 500);

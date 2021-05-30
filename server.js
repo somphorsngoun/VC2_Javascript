@@ -150,6 +150,7 @@ app.post('/checkChat', (req,res)=>{
 app.post('/message', (req, res) =>{
   let Message = req.body;
   let isTrue = true;
+  let chatWith = [];
   let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
   if (Usermessage.length === 0){
     Usermessage.push(Message);
@@ -160,6 +161,7 @@ app.post('/message', (req, res) =>{
       if (user.user1 === Message.user1 && user.user2 === Message.user2 || user.user1 === Message.user2 && user.user2 === Message.user1){
         user.messages.push(Message.messages[0]);
         isTrue = false;
+        chatWith = user.messages;
         fs.writeFileSync('message.json', JSON.stringify(user.messages));
 
 
