@@ -6,17 +6,18 @@ let Start = document.querySelector('.start');
 let space_Message = document.querySelector('.main');
 let user_chatWith = localStorage.getItem('chat_with');
 
+// display name url on your profile......................................................................................
 let dataUser = JSON.parse(localStorage.getItem('UserInfo'));
 let UserProfile = document.querySelector('.Profile');
 let UserName = document.querySelector('#Name');
 UserName.textContent = dataUser.username;
 UserProfile.src = dataUser.url;
 
-// let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
-let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
+let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
+// let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
 
 
-// ..............................................................................................................................................
+// display message..............................................................................................................................................
 
 let writeMessage = (Allmessage) => { 
   let fri_user = JSON.parse(localStorage.getItem('messageWith'));
@@ -62,7 +63,7 @@ let writeMessage = (Allmessage) => {
     lastMessage = user;
   }
 }
-// ..............................................................................................................................................
+// get message and remove old message..............................................................................................................................................
 let refresh = (response) => {
   let Allmessage = response.data;
   let old_message = document.querySelectorAll('.myMessage');
@@ -77,7 +78,7 @@ let refresh = (response) => {
   }
   writeMessage(Allmessage);
 }
-// .....................................................................................................................................
+// Resuest all message.....................................................................................................................................
 let send_message = () =>{
   let Allmessage = GET_LOGIN_REQUEST + 'messages'; 
   axios
@@ -86,7 +87,7 @@ let send_message = () =>{
 
     
 }
-// .....................................................................................................
+// get data friend post server to request old message.....................................................................................................
 let ChatWithtFri = (event) => {
     localStorage.setItem('chat_with', false);
     Start.style.display = 'none';
@@ -94,12 +95,10 @@ let ChatWithtFri = (event) => {
     in_relation = true;
     localStorage.setItem('chat_with', false);
     console.log(event.target.children);
-    // let getUserurl = event.target.children[0].src;
-    // console.log(getUserurl);
+
     let getUsername = event.target.children[1].textContent;
     let getUserpass = event.target.children[2].textContent;
     let getUserpic = event.target.children[3].textContent;
-    console.log(getUserpic);
     let getUsercolor = event.target.children[4].textContent;
     let userIfo = JSON.parse(localStorage.getItem('UserInfo'));
     let Object = {
@@ -115,9 +114,7 @@ let ChatWithtFri = (event) => {
     localStorage.setItem('messageWith', JSON.stringify(fri_object));
     let url = GET_LOGIN_REQUEST + 'checkChat';
     axios.post(url, Object).then(refresh)
-    // text_message();
 
-    
     let friProfile = document.querySelector('.user');
     friProfile.src = getUserpic;
     let friName = document.querySelector('#name');
@@ -130,7 +127,7 @@ let ChatWithtFri = (event) => {
     
     
   }
-// ...................................................................................................
+// get friend from server...................................................................................................
 let MyFri = (response) => {
     let Myfriend = response.data;
     let MyFriends = document.querySelector('.MyFriends');
@@ -146,7 +143,6 @@ let MyFri = (response) => {
         url: fri.url
       }
       MyFriends.appendChild(createFriend(fridata));
-      // MyFriends.appendChild();
     }
     let wantAdd = document.querySelectorAll('.MyFriends .myprofile');
     
@@ -155,7 +151,7 @@ let MyFri = (response) => {
 
     }
   }
-// ...................................................................................................
+// click on user icon...................................................................................................
 let UserFriend = () =>{
     let MyProfile = document.querySelector('.MyProfile');
     MyProfile.style.display = 'block';
@@ -168,7 +164,7 @@ let UserFriend = () =>{
     let User = JSON.parse(localStorage.getItem('UserInfo'));
     axios.post(URL,User).then(MyFri)
    }
-// .................................................................................................
+// mode dark.................................................................................................
 let selectMode = () =>{
     let start = document.querySelector('#start');
 
@@ -184,7 +180,7 @@ let selectMode = () =>{
     }
     
   }
- //...............................................................................................................................
+ //Logout...............................................................................................................................
  let acc_logout = () => {
   let comfirm = confirm("Are you sure to logout your account");
    if (comfirm){
@@ -196,7 +192,7 @@ let selectMode = () =>{
       console.log(123);
   }
 
-// ..............................................................................................................................
+// Get data friend when u click and post to server..............................................................................................................................
 let selectFri = (event) =>{
     localStorage.setItem('chat_with', false);
     let getUsername = event.target.children[1].textContent;
@@ -217,8 +213,6 @@ let selectFri = (event) =>{
    let MyFriends = document.querySelector('.MyFriends');
    MyFriends.appendChild(createFriend(Object));
    localStorage.setItem('messageWith', JSON.stringify(Object));
-  //  let URL = GET_LOGIN_REQUEST + 'chating';
-  //    axios.post(URL, Object).then(Chat)
    
    let main = document.querySelector('.main');
    main.style.display = 'block';
@@ -230,7 +224,7 @@ let selectFri = (event) =>{
    friName.textContent = getUsername;
  
   }
-// .............................................................................................................
+// click one user that u want to add to your friend.............................................................................................................
 let addTofriend = () =>{
     let wantAdd = document.querySelectorAll('.Friends .myprofile');
     
@@ -239,7 +233,7 @@ let addTofriend = () =>{
 
     }
   }
-// ...................................................................................................
+// Display user...................................................................................................
 let createFriend = (user) => {
 
     let Profile = document.createElement('div');
@@ -274,7 +268,7 @@ let createFriend = (user) => {
 
     return User;
   }
-// ..........................................................................................................................................
+// get all user from server..........................................................................................................................................
   let AllUser = (response) =>{
     let userInfo = response.data;
     let MyUser = JSON.parse(localStorage.getItem('UserInfo'));
@@ -283,10 +277,12 @@ let createFriend = (user) => {
     MyFriends.style.display = 'none';
     Friends.style.display = 'block';
 
+    // Remove old user...........................................................................................
     let Remove = document.querySelectorAll('.Friends .OneUser')
     for (fri of Remove){
       fri.remove();
     }
+    // Loop to call createFriend() to display user.............................................................................................
     for (let user of userInfo){
       if (user.username !== MyUser.username || user.password !== MyUser.password){
         Friends.appendChild(createFriend(user));
@@ -294,9 +290,10 @@ let createFriend = (user) => {
       }
     
     }
+    // call addTofriend() to add to user's friend..............................................................................................
     addTofriend();
   }
-// ...........................................................................................................
+// REquest all user from servr...........................................................................................................
   let AddFriend = () => {
     let MyProfile = document.querySelector('.MyProfile');
     MyProfile.style.display = 'none';
@@ -304,7 +301,7 @@ let createFriend = (user) => {
     axios.get(URL).then(AllUser)
   }
 
-// ..................................................................................................
+// Show emoji..................................................................................................
 let imojis = (response) =>{
     let allSticker = response.data;
     let showImoji = document.querySelector('.showImoji');
@@ -338,7 +335,7 @@ stickers.addEventListener('click', ()=>{
 });
 let url = GET_LOGIN_REQUEST + 'emoji';
 axios.get(url).then(imojis)
-// .......................................................................................................................
+// Get message from server.......................................................................................................................
 let sendMessage = (response) =>{
     let Allmessage = response.data;
     all_message = Allmessage;
@@ -353,8 +350,10 @@ let sendMessage = (response) =>{
         
 }
 
-let Textmessage = (response) =>{
-    let ChatWith = response.data;
+// Send function is the function that send message to server.................................................................................................................................
+let Send = (e) =>{
+    e.preventDefault();
+    
     let MyMessage = document.querySelector('#writeMessage');
     let MyAccount = JSON.parse(localStorage.getItem("UserInfo"));
     let friAccount = JSON.parse(localStorage.getItem("messageWith"));
@@ -390,17 +389,9 @@ let Textmessage = (response) =>{
     axios.post(URL, ObjectOfmessage).then(sendMessage)
     MyMessage.value = '';
 
-}
-// .................................................................................................................................
-let Send = (e) =>{
-    e.preventDefault();
-    
-    let url = GET_LOGIN_REQUEST + 'chating';
-    axios.get(url).then(Textmessage)
-
   }
 
-// ...................................................................................................................................
+// Bold message...................................................................................................................................
 let set_bold = (e) =>{
   e.preventDefault();
   let MyMessage = document.querySelector('#writeMessage');
@@ -415,7 +406,7 @@ let set_bold = (e) =>{
   }
 
 }
-// ...................................................................................................................................
+// Italic message...................................................................................................................................
 let set_italic = (e) =>{
   e.preventDefault();
   let MyMessage = document.querySelector('#writeMessage');
@@ -430,7 +421,7 @@ let set_italic = (e) =>{
   }
 
 }
-// ...................................................................................................................................
+// Underline message...................................................................................................................................
 let set_underline = (e) =>{
   e.preventDefault();
   let MyMessage = document.querySelector('#writeMessage');
@@ -445,7 +436,7 @@ let set_underline = (e) =>{
   }
 
 }
-//  --------------------------------------------------------------------------------------------------------------------------------
+//  Main--------------------------------------------------------------------------------------------------------------------------------
 let Mymode = true;
 let in_relation = true;
 let my_chat = false;
@@ -492,7 +483,6 @@ if (user_chatWith){
   friProfile.src = fri_account.url;
   let friName = document.querySelector('#name');
   friName.textContent = fri_account.username;
-  // writeMessage();
 }
 let chatArea = document.querySelector('.spaceMessage');
 chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;

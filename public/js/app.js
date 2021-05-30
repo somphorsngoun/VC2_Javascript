@@ -1,11 +1,11 @@
 
-// let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
-let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
+let GET_LOGIN_REQUEST = 'https://letschat-app-vc.herokuapp.com/';
+// let GET_LOGIN_REQUEST = 'http://192.168.2.28:5000/';
 
-// ..................................................................................................................................
+// login your account..................................................................................................................................
 function login(e) {
     e.preventDefault();
-    // 1- TODO: Create the REQUEST
+    // 1- Create the REQUEST
     let querry = GET_LOGIN_REQUEST+'login?username='+username.value+ '&password=' + password.value;
     axios.get(querry).then((response) => {
       let isValid = response.data.isValid;
@@ -25,36 +25,7 @@ function login(e) {
     });
   }
 
-// ..............................................................................................
-
-// // ..........................................................................................................
-// function preview_image(event) 
-//         {
-//           set_photo = false;
-//           let reader = new FileReader();
-//           let output = document.querySelector('.profile');
-//           reader.onload = function()
-//             {
-//               output.src = reader.result;
-//               dataUser = {
-//                 username: UserName.value,
-//                 password: Create_PassWord.value,
-//                 email: Email.value,
-//                 url: output.src,
-//                 friends: []
-//                 }
-        //       localStorage.setItem('UserInfo', JSON.stringify(dataUser));
-            
-        //       let url = GET_LOGIN_REQUEST + '/register';
-        //       axios
-        //           .post(url, dataUser)
-
-        //       }
-        //   reader.readAsDataURL(event.target.files[0]);
-        // }
-
-
-// ................................................................................................
+// Register your account................................................................................................
 let register = (e) =>{
     e.preventDefault();
     
@@ -98,14 +69,14 @@ let register = (e) =>{
     }
     
   }
-// .............................................................................................................
+// display register form.............................................................................................................
   let registerForm = (e) =>{
     e.preventDefault();
     document.querySelector('.register').style.display = 'block';
     document.querySelector('.login').style.display = 'none';
   }
 
-// .................................................................................................
+// click cancel remove value in input.................................................................................................
 let Cancel = (e) =>{
     e.preventDefault();
     UserName.value = '';
@@ -113,7 +84,7 @@ let Cancel = (e) =>{
     Comfirm_PassWord.value = '';
     Email.value = '';
   }
-// --------------------------------------------------------------------------------------------------
+// Main--------------------------------------------------------------------------------------------------
 let dataUser = {};
 let set_photo = true;
 

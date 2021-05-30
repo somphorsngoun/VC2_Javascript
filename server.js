@@ -14,10 +14,10 @@ let my_data = {};
 let users = JSON.parse(fs.readFileSync('users_data.json'));
 // login request path
 app.use("/login", (req, res) => {
-    //1. try to get the username and password from the query of the request.
+    // get the username and password from the query of the request............................
     let username = req.query.username;
     let password = req.query.password;
-    //2. Check user and password if valid return true otherwise return false.
+    //Check user and password if valid .......................................................
     let isValid = false;
     for (let user of users){
       if (username === user.username && password === user.password){
@@ -31,7 +31,7 @@ app.use("/login", (req, res) => {
     }
     res.send(login);
  });
-
+// When u register account write on user_data.json ...............................................................................................................
 app.post('/register', (req,res) => {
   let signin = req.body;
   let sameName = true;
@@ -51,27 +51,24 @@ app.post('/register', (req,res) => {
   fs.writeFileSync('users_data.json', JSON.stringify(users));
   res.send(users);
 })
- 
-// app.post('/users', (req, res) => {
-//     my_data = req.body;
-// })
-
+// send all user when client request...................................................................................
 app.get('/AllUsers', (req, res) => {
   res.send(users);
 })
-
+// when u add more friend.........................................................................................
 app.post('/addTofriend', (req,res) =>{
   let Username = req.body.username;
   let Userpass = req.body.password;
   my_data = req.body.my_userData;
-  // console.log(Username, Userpass);
   let Friend = {};
   let IsTrue = true;
+  // check user to get more data
   for (user of users){
     if (user.username === Username && user.password === Userpass){
       Friend = user;
     }
   }
+  // check user to add friend
   for (fri of users){
     if (fri.username === my_data.username && fri.password === my_data.password){
       let friUser = {
@@ -98,6 +95,7 @@ app.post('/addTofriend', (req,res) =>{
 
     }
   }
+  // check if we ever chat before get old message to display
   let Usermessage = JSON.parse(fs.readFileSync('user_message.json'));
   let isTrue = true;
   if (Usermessage.length !== 0){
@@ -124,7 +122,7 @@ app.post('/addTofriend', (req,res) =>{
   fs.writeFileSync('users_data.json', JSON.stringify(users));
 
 })
-
+// get user name to check friend and send all friend back.......................................................
 let fri_data = {};
 app.post('/myFri', (req, res) => {
   fri_data = req.body;
@@ -135,24 +133,11 @@ app.post('/myFri', (req, res) => {
   }
 })
 
-
-let Chating = {};
-app.post('/chating', (req, res) => {
-  Chating = req.body;
-  res.send(Chating);
-
-})
-app.get('/chating', (req, res) => {
-    res.send(Chating);
-})
-
+// check name of chat that we ever chat and write to message.json, read and send old message back.........................
 app.post('/checkChat', (req,res)=>{
   let user_infor = req.body;
   let all_message = JSON.parse(fs.readFileSync('user_message.json'));
   for (oldmessage of all_message){
-    console.log(user_infor);
-    console.log(oldmessage);
-
     if (user_infor.user1 === oldmessage.user1 && user_infor.user2 === oldmessage.user2 || user_infor.user1 === oldmessage.user2 && user_infor.user2 == oldmessage.user1){
       fs.writeFileSync('message.json', JSON.stringify(oldmessage.messages));
       console.log(123);
@@ -161,7 +146,7 @@ app.post('/checkChat', (req,res)=>{
   }
 })
 
-
+// when u send message it will push to your old message.........................................................
 app.post('/message', (req, res) =>{
   let Message = req.body;
   let isTrue = true;
@@ -187,20 +172,12 @@ app.post('/message', (req, res) =>{
   fs.writeFileSync('user_message.json', JSON.stringify(Usermessage));
   res.send(chatWith);
 })
+// read message.json for send back to display.................................................................................
 app.get('/messages', (req, res) => {
   res.send(JSON.parse(fs.readFileSync('message.json')));
 })
-
+// read emoji.json and send back to display emoji..............................................................................
 app.get('/emoji', (req, res)=> {
   let sticker = JSON.parse(fs.readFileSync('emoji.json'));
   res.send(sticker);
-})
-
-app.post('/fri_data', (req, res)=> {
-  let fri_infor = req.body;
-  for (user of users){
-    if (user.username === fri_infor.username && user.password === fri_data.password){
-      res.send(user);
-    }
-  }
 })
